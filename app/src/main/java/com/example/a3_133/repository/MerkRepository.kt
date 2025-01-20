@@ -2,7 +2,7 @@ package com.example.a3_133.repository
 
 import com.example.a3_133.model.Merk
 import com.example.a3_133.service.MerkService
-import java.io.IOException
+import okio.IOException
 
 interface MerkRepository {
     suspend fun getMerk(): List<Merk>
