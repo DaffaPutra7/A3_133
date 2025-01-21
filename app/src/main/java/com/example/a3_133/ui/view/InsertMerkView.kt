@@ -23,13 +23,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
+import com.example.a3_133.ui.navigation.DestinasiNavigasi
 import com.example.a3_133.ui.viewmodel.InsertMerkViewModel
 import com.example.a3_133.ui.viewmodel.InsertUiEvent
 import com.example.a3_133.ui.viewmodel.InsertUiState
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.launch
 
-object DestinasiEntry : DestinasiNavigasi{
+object DestinasiEntry : DestinasiNavigasi {
     override val route = "item_entry"
     override val titleRes = "Entry Mhs"
 }
