@@ -46,7 +46,7 @@ import com.example.a3_133.ui.viewmodel.PenyediaViewModel
 
 object DestinasiHome : DestinasiNavigasi {
     override val route = "home"
-    override val titleRes = "Home Mhs"
+    override val titleRes = "Home Merk"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
