@@ -55,7 +55,7 @@ fun MerkHomeScreen(
     navigateToItemEntry: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeMerkViewModel = viewModel(factory = PenyediaViewModel.Factory)
-){
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
@@ -75,14 +75,17 @@ fun MerkHomeScreen(
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
             ) {
-                Icon(imageVector = Icons.Default.Add,
-                    contentDescription = "Add Merk")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Merk")
             }
         },
     ) { innerPadding ->
         MerkHomeStatus(
             homeUiState = viewModel.merkUIState,
-            retryAction = { viewModel.getMerk() }, modifier = Modifier.padding(innerPadding),
+            retryAction = { viewModel.getMerk() },
+            modifier = Modifier.padding(innerPadding),
+            onDeleteClick = { merk ->
+                viewModel.deleteMerk(merk.idMerk)
+            }
         )
     }
 }
@@ -92,22 +95,24 @@ fun MerkHomeStatus(
     homeUiState: HomeUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Merk) -> Unit = {},
-){
-    when(homeUiState) {
+    onDeleteClick: (Merk) -> Unit = {}
+) {
+    when (homeUiState) {
         is HomeUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
-
         is HomeUiState.Success ->
             if (homeUiState.merk.isEmpty()) {
-                return Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     Text(text = "Tidak ada data Merk")
                 }
             } else {
                 MerkLayout(
                     merk = homeUiState.merk,
                     modifier = modifier.fillMaxWidth(),
-                    onDeleteClick = {
-                        onDeleteClick(it)
+                    onDeleteClick = { merk ->
+                        onDeleteClick(merk)
                     }
                 )
             }
@@ -147,7 +152,7 @@ fun MerkLayout(
     merk: List<Merk>,
     modifier: Modifier = Modifier,
     onDeleteClick: (Merk) -> Unit = {}
-){
+) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
@@ -156,11 +161,8 @@ fun MerkLayout(
         items(merk) { mrk ->
             MerkCard(
                 merk = mrk,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                onDeleteClick = {
-                    onDeleteClick(mrk)
-                }
+                modifier = Modifier.fillMaxWidth(),
+                onDeleteClick = { onDeleteClick(mrk) }
             )
         }
     }
@@ -171,7 +173,7 @@ fun MerkCard(
     merk: Merk,
     modifier: Modifier = Modifier,
     onDeleteClick: (Merk) -> Unit = {}
-){
+) {
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
@@ -190,18 +192,18 @@ fun MerkCard(
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = { onDeleteClick(merk)}) {
+                IconButton(onClick = { onDeleteClick(merk) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
                     )
                 }
-
-                Text(
-                    text = merk.idMerk,
-                    style = MaterialTheme.typography.titleMedium
-                )
             }
+
+            Text(
+                text = merk.idMerk,
+                style = MaterialTheme.typography.titleMedium
+            )
 
             Text(
                 text = merk.deskripsiMerk,
