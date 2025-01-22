@@ -17,10 +17,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -53,10 +56,15 @@ object DestinasiHome : DestinasiNavigasi {
 @Composable
 fun MerkHomeScreen(
     navigateToItemEntry: () -> Unit,
+    navigateToUpdate: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeMerkViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    LaunchedEffect(Unit) {
+        viewModel.getMerk()
+    }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -70,12 +78,13 @@ fun MerkHomeScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
+            ExtendedFloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Merk")
+                Text(text = "Tambah Merk")
             }
         },
     ) { innerPadding ->
@@ -85,6 +94,9 @@ fun MerkHomeScreen(
             modifier = Modifier.padding(innerPadding),
             onDeleteClick = { merk ->
                 viewModel.deleteMerk(merk.idMerk)
+            },
+            onUpdateClick = { merk ->
+                navigateToUpdate(merk.idMerk)
             }
         )
     }
@@ -95,7 +107,8 @@ fun MerkHomeStatus(
     homeUiState: HomeUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Merk) -> Unit = {}
+    onDeleteClick: (Merk) -> Unit,
+    onUpdateClick: (Merk) -> Unit
 ) {
     when (homeUiState) {
         is HomeUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
@@ -111,9 +124,8 @@ fun MerkHomeStatus(
                 MerkLayout(
                     merk = homeUiState.merk,
                     modifier = modifier.fillMaxWidth(),
-                    onDeleteClick = { merk ->
-                        onDeleteClick(merk)
-                    }
+                    onDeleteClick = onDeleteClick,
+                    onUpdateClick = onUpdateClick
                 )
             }
         is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
@@ -151,7 +163,8 @@ fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier){
 fun MerkLayout(
     merk: List<Merk>,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Merk) -> Unit = {}
+    onDeleteClick: (Merk) -> Unit,
+    onUpdateClick: (Merk) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -162,7 +175,8 @@ fun MerkLayout(
             MerkCard(
                 merk = mrk,
                 modifier = Modifier.fillMaxWidth(),
-                onDeleteClick = { onDeleteClick(mrk) }
+                onDeleteClick = { onDeleteClick(mrk) },
+                onUpdateClick = { onUpdateClick(mrk) }
             )
         }
     }
@@ -172,7 +186,8 @@ fun MerkLayout(
 fun MerkCard(
     merk: Merk,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Merk) -> Unit = {}
+    onDeleteClick: (Merk) -> Unit = {},
+    onUpdateClick: (Merk) -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -196,6 +211,13 @@ fun MerkCard(
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
+                    )
+                }
+
+                IconButton(onClick = { onUpdateClick(merk) }) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Edit Merk",
                     )
                 }
             }
