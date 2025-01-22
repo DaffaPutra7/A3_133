@@ -21,6 +21,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
+import com.example.a3_133.ui.navigation.DestinasiNavigasi
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
 import com.example.a3_133.ui.viewmodel.UpdateMerkViewModel
 import com.example.a3_133.ui.viewmodel.UpdateUiEvent
@@ -109,14 +110,6 @@ fun FormUpdateMerk(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        OutlinedTextField(
-            value = updateUiEvent.idMerk,
-            onValueChange = { onValueChange(updateUiEvent.copy(idMerk = it)) },
-            label = { Text("ID Merk") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
         OutlinedTextField(
             value = updateUiEvent.namaMerk,
             onValueChange = { onValueChange(updateUiEvent.copy(namaMerk = it)) },
