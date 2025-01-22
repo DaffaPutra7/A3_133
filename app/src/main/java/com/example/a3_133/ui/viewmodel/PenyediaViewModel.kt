@@ -9,11 +9,15 @@ import com.example.a3_133.A3Applications
 
 object PenyediaViewModel {
     val Factory = viewModelFactory {
-        initializer { HomeMerkViewModel(aplikasiMahasiswa().container.merkRepository) }
-        initializer { InsertMerkViewModel(aplikasiMahasiswa().container.merkRepository) }
-        initializer { UpdateMerkViewModel(aplikasiMahasiswa().container.merkRepository) }
+        initializer { HomeMerkViewModel(aplikasiA3().container.merkRepository) }
+        initializer { InsertMerkViewModel(aplikasiA3().container.merkRepository) }
+        initializer { UpdateMerkViewModel(aplikasiA3().container.merkRepository) }
+
+        initializer { HomePemasokViewModel(aplikasiA3().container.pemasokRepository) }
+        initializer { InsertPemasokViewModel(aplikasiA3().container.pemasokRepository) }
+        initializer { UpdatePemasokViewModel(aplikasiA3().container.pemasokRepository) }
     }
 }
 
-fun CreationExtras.aplikasiMahasiswa(): A3Applications =
+fun CreationExtras.aplikasiA3(): A3Applications =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as A3Applications)
