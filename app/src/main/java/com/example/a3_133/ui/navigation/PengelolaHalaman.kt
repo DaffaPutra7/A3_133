@@ -25,7 +25,10 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
 
         composable(DestinasiHome.route) {
             MerkHomeScreen(
-                navigateToItemEntry = {navController.navigate(DestinasiEntry.route)}
+                navigateToItemEntry = {navController.navigate(DestinasiEntry.route)},
+                navigateToUpdate = { id ->
+                    navController.navigate("update_merk/$id") // Navigasi ke update
+                }
             )
         }
 
