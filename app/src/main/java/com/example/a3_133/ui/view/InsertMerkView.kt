@@ -112,15 +112,6 @@ fun FormInputMerk(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         OutlinedTextField(
-            value = insertUiEvent.idMerk,
-            onValueChange = { onValueChange(insertUiEvent.copy(idMerk = it))},
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text("ID Merk") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        OutlinedTextField(
             value = insertUiEvent.namaMerk,
             onValueChange = { onValueChange(insertUiEvent.copy(namaMerk = it))},
             label = { Text("Nama Merk") },
