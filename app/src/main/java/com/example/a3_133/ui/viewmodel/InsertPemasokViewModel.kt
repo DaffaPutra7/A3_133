@@ -15,7 +15,7 @@ class InsertPemasokViewModel(private val pemasok: PemasokRepository) : ViewModel
     var pemasokuiState by mutableStateOf(InsertPemasokUiState())
         private set
 
-    fun updateInsertMerkState(insertpemasokUiEvent: InsertPemasokUiEvent){
+    fun updateInsertPemasokState(insertpemasokUiEvent: InsertPemasokUiEvent){
         pemasokuiState = InsertPemasokUiState(insertPemasokUiEvent = insertpemasokUiEvent)
     }
 
