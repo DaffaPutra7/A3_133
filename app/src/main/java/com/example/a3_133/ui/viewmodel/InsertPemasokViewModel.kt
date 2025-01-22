@@ -1,6 +1,34 @@
 package com.example.a3_133.ui.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.a3_133.model.Pemasok
+import com.example.a3_133.repository.MerkRepository
+import com.example.a3_133.repository.PemasokRepository
+import kotlinx.coroutines.launch
+
+class InsertPemasokViewModel(private val pemasok: PemasokRepository) : ViewModel() {
+
+    var pemasokuiState by mutableStateOf(InsertPemasokUiState())
+        private set
+
+    fun updateInsertMerkState(insertpemasokUiEvent: InsertPemasokUiEvent){
+        pemasokuiState = InsertPemasokUiState(insertPemasokUiEvent = insertpemasokUiEvent)
+    }
+
+    suspend fun insertPemasok(){
+        viewModelScope.launch {
+            try {
+                pemasok.insertPemasok(pemasokuiState.insertPemasokUiEvent.toPemasok())
+            } catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+}
 
 data class InsertPemasokUiState(
     val insertPemasokUiEvent: InsertPemasokUiEvent = InsertPemasokUiEvent()
