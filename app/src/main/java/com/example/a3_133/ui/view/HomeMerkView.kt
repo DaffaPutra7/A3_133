@@ -223,11 +223,6 @@ fun MerkCard(
             }
 
             Text(
-                text = merk.idMerk,
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Text(
                 text = merk.deskripsiMerk,
                 style = MaterialTheme.typography.titleMedium
             )
