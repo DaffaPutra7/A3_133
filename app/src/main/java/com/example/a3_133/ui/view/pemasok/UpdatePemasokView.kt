@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.view
+package com.example.a3_133.ui.view.pemasok
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,7 +8,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -16,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -23,45 +23,45 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
-import com.example.a3_133.ui.navigation.DestinasiNavigasi
-import com.example.a3_133.ui.viewmodel.InsertMerkViewModel
-import com.example.a3_133.ui.viewmodel.InsertUiEvent
-import com.example.a3_133.ui.viewmodel.InsertUiState
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
+import com.example.a3_133.ui.viewmodel.pemasok.UpdatePemasokUiEvent
+import com.example.a3_133.ui.viewmodel.pemasok.UpdatePemasokUiState
+import com.example.a3_133.ui.viewmodel.pemasok.UpdatePemasokViewModel
 import kotlinx.coroutines.launch
-
-object DestinasiEntry : DestinasiNavigasi {
-    override val route = "merk_entry"
-    override val titleRes = "Entry Merk"
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EntryMerkScreen(
+fun UpdatePemasokView(
     navigateBack: () -> Unit,
+    id: String,
     modifier: Modifier = Modifier,
-    viewModel: InsertMerkViewModel = viewModel(factory = PenyediaViewModel.Factory)
-){
+    viewModel: UpdatePemasokViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
+    val uipemasokState = viewModel.pemasokuiState
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    LaunchedEffect(id) {
+        viewModel.getPemasokById(id)
+    }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CustomeTopAppBar(
-                title = DestinasiEntry.titleRes,
+                title = "Update Pemasok",
                 canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
                 navigateUp = navigateBack
             )
         }
     ) { innerPadding ->
-        EntryBodyMerk(
-            insertUiState = viewModel.uiState,
-            onMerkValueChange = viewModel::updateInsertMerkState,
+        UpdateBodyPemasok(
+            updatepemasokUiState = uipemasokState,
+            onPemasokValueChange = viewModel::updatePemasokState,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.insertMerk()
+                    viewModel.updatePemasok()
                     navigateBack()
                 }
             },
@@ -74,19 +74,19 @@ fun EntryMerkScreen(
 }
 
 @Composable
-fun EntryBodyMerk(
-    insertUiState: InsertUiState,
-    onMerkValueChange: (InsertUiEvent) -> Unit,
+fun UpdateBodyPemasok(
+    updatepemasokUiState: UpdatePemasokUiState,
+    onPemasokValueChange: (UpdatePemasokUiEvent) -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(18.dp),
         modifier = modifier.padding(12.dp)
     ) {
-        FormInputMerk(
-            insertUiEvent = insertUiState.insertUiEvent,
-            onValueChange = onMerkValueChange,
+        FormUpdatePemasok(
+            updatepemasokUiEvent = updatepemasokUiState.updatePemasokUiEvent,
+            onValueChange = onPemasokValueChange,
             modifier = Modifier.fillMaxWidth()
         )
         Button(
@@ -94,48 +94,49 @@ fun EntryBodyMerk(
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Simpan")
+            Text(text = "Update")
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormInputMerk(
-    insertUiEvent: InsertUiEvent,
+fun FormUpdatePemasok(
+    updatepemasokUiEvent: UpdatePemasokUiEvent,
     modifier: Modifier = Modifier,
-    onValueChange: (InsertUiEvent) -> Unit = {},
+    onValueChange: (UpdatePemasokUiEvent) -> Unit = {},
     enabled: Boolean = true
-){
+) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         OutlinedTextField(
-            value = insertUiEvent.namaMerk,
-            onValueChange = { onValueChange(insertUiEvent.copy(namaMerk = it))},
-            label = { Text("Nama Merk") },
+            value = updatepemasokUiEvent.namaPemasok,
+            onValueChange = { onValueChange(updatepemasokUiEvent.copy(namaPemasok = it)) },
+            label = { Text("Nama Pemasok") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
+
         OutlinedTextField(
-            value = insertUiEvent.deskripsiMerk,
-            onValueChange = { onValueChange(insertUiEvent.copy(deskripsiMerk = it))},
-            label = { Text("Deskripsi Merk") },
+            value = updatepemasokUiEvent.alamatPemasok,
+            onValueChange = { onValueChange(updatepemasokUiEvent.copy(alamatPemasok = it)) },
+            label = { Text("Alamat Pemasok") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
-        if (enabled) {
-            Text(
-                text = "Isi Smeua Data!",
-                modifier = Modifier.padding(12.dp)
-            )
-        }
-        Divider(
-            thickness = 8.dp,
-            modifier = Modifier.padding(12.dp)
+
+        OutlinedTextField(
+            value = updatepemasokUiEvent.teleponPemasok,
+            onValueChange = { onValueChange(updatepemasokUiEvent.copy(teleponPemasok = it)) },
+            label = { Text("Telepon Pemasok") },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            enabled = enabled,
+            singleLine = true
         )
     }
 }

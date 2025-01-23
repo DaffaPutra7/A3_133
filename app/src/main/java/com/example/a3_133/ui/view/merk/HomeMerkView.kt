@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.view
+package com.example.a3_133.ui.view.merk
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -38,40 +38,40 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.R
-import com.example.a3_133.model.Pemasok
+import com.example.a3_133.model.Merk
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.navigation.DestinasiNavigasi
-import com.example.a3_133.ui.viewmodel.HomePemasokUiState
-import com.example.a3_133.ui.viewmodel.HomePemasokViewModel
+import com.example.a3_133.ui.viewmodel.merk.HomeMerkViewModel
+import com.example.a3_133.ui.viewmodel.merk.HomeUiState
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
 
-object DestinasiHomePemasok : DestinasiNavigasi {
-    override val route = "homepemasok"
-    override val titleRes = "Home Pemasok"
+object DestinasiHome : DestinasiNavigasi {
+    override val route = "homemerk"
+    override val titleRes = "Home Merk"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PemasokHomeScreen(
+fun MerkHomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToUpdate: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomePemasokViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: HomeMerkViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(Unit) {
-        viewModel.getPemasok()
+        viewModel.getMerk()
     }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CustomeTopAppBar(
-                title = DestinasiHomePemasok.titleRes,
+                title = DestinasiHome.titleRes,
                 canNavigateBack = false,
                 onRefresh = {
-                    viewModel.getPemasok()
+                    viewModel.getMerk()
                 }
             )
         },
@@ -81,57 +81,57 @@ fun PemasokHomeScreen(
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Pemasok")
-                Text(text = "Tambah Pemasok")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Merk")
+                Text(text = "Tambah Merk")
             }
         },
     ) { innerPadding ->
-        PemasokHomeStatus(
-            homePemasokUiState = viewModel.pemasokUIState,
-            retryAction = { viewModel.getPemasok() },
+        MerkHomeStatus(
+            homeUiState = viewModel.merkUIState,
+            retryAction = { viewModel.getMerk() },
             modifier = Modifier.padding(innerPadding),
-            onDeleteClick = { pemasok ->
-                viewModel.deletePemasok(pemasok.idPemasok)
+            onDeleteClick = { merk ->
+                viewModel.deleteMerk(merk.idMerk)
             },
-            onUpdateClick = { pemasok ->
-                navigateToUpdate(pemasok.idPemasok)
+            onUpdateClick = { merk ->
+                navigateToUpdate(merk.idMerk)
             }
         )
     }
 }
 
 @Composable
-fun PemasokHomeStatus(
-    homePemasokUiState: HomePemasokUiState,
+fun MerkHomeStatus(
+    homeUiState: HomeUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Pemasok) -> Unit,
-    onUpdateClick: (Pemasok) -> Unit
+    onDeleteClick: (Merk) -> Unit,
+    onUpdateClick: (Merk) -> Unit
 ) {
-    when (homePemasokUiState) {
-        is HomePemasokUiState.Loading -> OnLoadingPemasok(modifier = modifier.fillMaxSize())
-        is HomePemasokUiState.Success ->
-            if (homePemasokUiState.pemasok.isEmpty()) {
+    when (homeUiState) {
+        is HomeUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
+        is HomeUiState.Success ->
+            if (homeUiState.merk.isEmpty()) {
                 Box(
                     modifier = modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Tidak ada data Pemasok")
+                    Text(text = "Tidak ada data Merk")
                 }
             } else {
-                PemasokLayout(
-                    pemasok = homePemasokUiState.pemasok,
+                MerkLayout(
+                    merk = homeUiState.merk,
                     modifier = modifier.fillMaxWidth(),
                     onDeleteClick = onDeleteClick,
                     onUpdateClick = onUpdateClick
                 )
             }
-        is HomePemasokUiState.Error -> OnErrorPemasok(retryAction, modifier = modifier.fillMaxSize())
+        is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
     }
 }
 
 @Composable
-fun OnLoadingPemasok(modifier: Modifier = Modifier){
+fun OnLoading(modifier: Modifier = Modifier){
     Image(
         modifier = modifier.size(200.dp),
         painter = painterResource(R.drawable.loading),
@@ -140,7 +140,7 @@ fun OnLoadingPemasok(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun OnErrorPemasok(retryAction: () -> Unit, modifier: Modifier = Modifier){
+fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier){
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -158,34 +158,34 @@ fun OnErrorPemasok(retryAction: () -> Unit, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun PemasokLayout(
-    pemasok: List<Pemasok>,
+fun MerkLayout(
+    merk: List<Merk>,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Pemasok) -> Unit,
-    onUpdateClick: (Pemasok) -> Unit
+    onDeleteClick: (Merk) -> Unit,
+    onUpdateClick: (Merk) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(pemasok) { pmk ->
-            PemasokCard(
-                pemasok = pmk,
+        items(merk) { mrk ->
+            MerkCard(
+                merk = mrk,
                 modifier = Modifier.fillMaxWidth(),
-                onDeleteClick = { onDeleteClick(pmk) },
-                onUpdateClick = { onUpdateClick(pmk) }
+                onDeleteClick = { onDeleteClick(mrk) },
+                onUpdateClick = { onUpdateClick(mrk) }
             )
         }
     }
 }
 
 @Composable
-fun PemasokCard(
-    pemasok: Pemasok,
+fun MerkCard(
+    merk: Merk,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Pemasok) -> Unit = {},
-    onUpdateClick: (Pemasok) -> Unit = {}
+    onDeleteClick: (Merk) -> Unit = {},
+    onUpdateClick: (Merk) -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -201,32 +201,27 @@ fun PemasokCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = pemasok.namaPemasok,
+                    text = merk.namaMerk,
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = { onDeleteClick(pemasok) }) {
+                IconButton(onClick = { onDeleteClick(merk) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
                     )
                 }
 
-                IconButton(onClick = { onUpdateClick(pemasok) }) {
+                IconButton(onClick = { onUpdateClick(merk) }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = null,
+                        contentDescription = "Edit Merk",
                     )
                 }
             }
 
             Text(
-                text = pemasok.alamatPemasok,
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Text(
-                text = pemasok.teleponPemasok,
+                text = merk.deskripsiMerk,
                 style = MaterialTheme.typography.titleMedium
             )
         }

@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.viewmodel
+package com.example.a3_133.ui.viewmodel.merk
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +27,7 @@ class HomeMerkViewModel(private val merk: MerkRepository): ViewModel() {
 
     fun getMerk() {
         viewModelScope.launch {
-            merkUIState =  HomeUiState.Loading
+            merkUIState = HomeUiState.Loading
             merkUIState = try {
                 HomeUiState.Success(merk.getMerk())
             } catch (e:IOException) {

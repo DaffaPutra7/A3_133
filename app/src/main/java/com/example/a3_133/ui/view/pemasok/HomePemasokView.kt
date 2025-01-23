@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.view
+package com.example.a3_133.ui.view.pemasok
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -38,40 +38,40 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.R
-import com.example.a3_133.model.Kategori
+import com.example.a3_133.model.Pemasok
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.navigation.DestinasiNavigasi
-import com.example.a3_133.ui.viewmodel.HomeKategoriUiState
-import com.example.a3_133.ui.viewmodel.HomeKategoriViewModel
+import com.example.a3_133.ui.viewmodel.pemasok.HomePemasokUiState
+import com.example.a3_133.ui.viewmodel.pemasok.HomePemasokViewModel
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
 
-object DestinasiHomeKategori : DestinasiNavigasi {
-    override val route = "homekategori"
-    override val titleRes = "Home Kategori"
+object DestinasiHomePemasok : DestinasiNavigasi {
+    override val route = "homepemasok"
+    override val titleRes = "Home Pemasok"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun KategoriHomeScreen(
+fun PemasokHomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToUpdate: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeKategoriViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: HomePemasokViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(Unit) {
-        viewModel.getKategori()
+        viewModel.getPemasok()
     }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CustomeTopAppBar(
-                title = DestinasiHomeKategori.titleRes,
+                title = DestinasiHomePemasok.titleRes,
                 canNavigateBack = false,
                 onRefresh = {
-                    viewModel.getKategori()
+                    viewModel.getPemasok()
                 }
             )
         },
@@ -81,57 +81,57 @@ fun KategoriHomeScreen(
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Kategori")
-                Text(text = "Tambah Kategori")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Pemasok")
+                Text(text = "Tambah Pemasok")
             }
         },
     ) { innerPadding ->
-        KategoriHomeStatus(
-            homeKategoriUiState = viewModel.kategoriUIState,
-            retryAction = { viewModel.getKategori() },
+        PemasokHomeStatus(
+            homePemasokUiState = viewModel.pemasokUIState,
+            retryAction = { viewModel.getPemasok() },
             modifier = Modifier.padding(innerPadding),
-            onDeleteClick = { kategori ->
-                viewModel.deleteKategori(kategori.idKategori)
+            onDeleteClick = { pemasok ->
+                viewModel.deletePemasok(pemasok.idPemasok)
             },
-            onUpdateClick = { kategori ->
-                navigateToUpdate(kategori.idKategori)
+            onUpdateClick = { pemasok ->
+                navigateToUpdate(pemasok.idPemasok)
             }
         )
     }
 }
 
 @Composable
-fun KategoriHomeStatus(
-    homeKategoriUiState: HomeKategoriUiState,
+fun PemasokHomeStatus(
+    homePemasokUiState: HomePemasokUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Kategori) -> Unit,
-    onUpdateClick: (Kategori) -> Unit
+    onDeleteClick: (Pemasok) -> Unit,
+    onUpdateClick: (Pemasok) -> Unit
 ) {
-    when (homeKategoriUiState) {
-        is HomeKategoriUiState.Loading -> OnLoadingKategori(modifier = modifier.fillMaxSize())
-        is HomeKategoriUiState.Success ->
-            if (homeKategoriUiState.kategori.isEmpty()) {
+    when (homePemasokUiState) {
+        is HomePemasokUiState.Loading -> OnLoadingPemasok(modifier = modifier.fillMaxSize())
+        is HomePemasokUiState.Success ->
+            if (homePemasokUiState.pemasok.isEmpty()) {
                 Box(
                     modifier = modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Tidak ada data Kategori")
+                    Text(text = "Tidak ada data Pemasok")
                 }
             } else {
-                KategoriLayout(
-                    kategori = homeKategoriUiState.kategori,
+                PemasokLayout(
+                    pemasok = homePemasokUiState.pemasok,
                     modifier = modifier.fillMaxWidth(),
                     onDeleteClick = onDeleteClick,
                     onUpdateClick = onUpdateClick
                 )
             }
-        is HomeKategoriUiState.Error -> OnErrorKategori(retryAction, modifier = modifier.fillMaxSize())
+        is HomePemasokUiState.Error -> OnErrorPemasok(retryAction, modifier = modifier.fillMaxSize())
     }
 }
 
 @Composable
-fun OnLoadingKategori(modifier: Modifier = Modifier){
+fun OnLoadingPemasok(modifier: Modifier = Modifier){
     Image(
         modifier = modifier.size(200.dp),
         painter = painterResource(R.drawable.loading),
@@ -140,7 +140,7 @@ fun OnLoadingKategori(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun OnErrorKategori(retryAction: () -> Unit, modifier: Modifier = Modifier){
+fun OnErrorPemasok(retryAction: () -> Unit, modifier: Modifier = Modifier){
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -158,34 +158,34 @@ fun OnErrorKategori(retryAction: () -> Unit, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun KategoriLayout(
-    kategori: List<Kategori>,
+fun PemasokLayout(
+    pemasok: List<Pemasok>,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Kategori) -> Unit,
-    onUpdateClick: (Kategori) -> Unit
+    onDeleteClick: (Pemasok) -> Unit,
+    onUpdateClick: (Pemasok) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(kategori) { kt ->
-            KategoriCard(
-                kategori = kt,
+        items(pemasok) { pmk ->
+            PemasokCard(
+                pemasok = pmk,
                 modifier = Modifier.fillMaxWidth(),
-                onDeleteClick = { onDeleteClick(kt) },
-                onUpdateClick = { onUpdateClick(kt) }
+                onDeleteClick = { onDeleteClick(pmk) },
+                onUpdateClick = { onUpdateClick(pmk) }
             )
         }
     }
 }
 
 @Composable
-fun KategoriCard(
-    kategori: Kategori,
+fun PemasokCard(
+    pemasok: Pemasok,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Kategori) -> Unit = {},
-    onUpdateClick: (Kategori) -> Unit = {}
+    onDeleteClick: (Pemasok) -> Unit = {},
+    onUpdateClick: (Pemasok) -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -201,18 +201,18 @@ fun KategoriCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = kategori.namaKategori,
+                    text = pemasok.namaPemasok,
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = { onDeleteClick(kategori) }) {
+                IconButton(onClick = { onDeleteClick(pemasok) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
                     )
                 }
 
-                IconButton(onClick = { onUpdateClick(kategori) }) {
+                IconButton(onClick = { onUpdateClick(pemasok) }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = null,
@@ -221,7 +221,12 @@ fun KategoriCard(
             }
 
             Text(
-                text = kategori.deskripsiKategori,
+                text = pemasok.alamatPemasok,
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Text(
+                text = pemasok.teleponPemasok,
                 style = MaterialTheme.typography.titleMedium
             )
         }

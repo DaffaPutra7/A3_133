@@ -8,21 +8,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.a3_133.ui.view.DestinasiEntry
-import com.example.a3_133.ui.view.DestinasiEntryKategori
-import com.example.a3_133.ui.view.DestinasiEntryPemasok
-import com.example.a3_133.ui.view.DestinasiHome
-import com.example.a3_133.ui.view.DestinasiHomeKategori
-import com.example.a3_133.ui.view.DestinasiHomePemasok
-import com.example.a3_133.ui.view.EntryKategoriScreen
-import com.example.a3_133.ui.view.EntryMerkScreen
-import com.example.a3_133.ui.view.EntryPemasokScreen
-import com.example.a3_133.ui.view.KategoriHomeScreen
-import com.example.a3_133.ui.view.MerkHomeScreen
-import com.example.a3_133.ui.view.PemasokHomeScreen
-import com.example.a3_133.ui.view.UpdateKategoriView
-import com.example.a3_133.ui.view.UpdateMerkView
-import com.example.a3_133.ui.view.UpdatePemasokView
+import com.example.a3_133.ui.view.merk.DestinasiEntry
+import com.example.a3_133.ui.view.kategori.DestinasiEntryKategori
+import com.example.a3_133.ui.view.pemasok.DestinasiEntryPemasok
+import com.example.a3_133.ui.view.merk.DestinasiHome
+import com.example.a3_133.ui.view.kategori.DestinasiHomeKategori
+import com.example.a3_133.ui.view.pemasok.DestinasiHomePemasok
+import com.example.a3_133.ui.view.kategori.EntryKategoriScreen
+import com.example.a3_133.ui.view.merk.EntryMerkScreen
+import com.example.a3_133.ui.view.pemasok.EntryPemasokScreen
+import com.example.a3_133.ui.view.kategori.KategoriHomeScreen
+import com.example.a3_133.ui.view.merk.MerkHomeScreen
+import com.example.a3_133.ui.view.pemasok.PemasokHomeScreen
+import com.example.a3_133.ui.view.kategori.UpdateKategoriView
+import com.example.a3_133.ui.view.merk.UpdateMerkView
+import com.example.a3_133.ui.view.pemasok.UpdatePemasokView
 
 @Composable
 fun PengelolaHalaman(navController: NavHostController = rememberNavController()) {

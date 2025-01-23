@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.viewmodel
+package com.example.a3_133.ui.viewmodel.pemasok
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +27,7 @@ class HomePemasokViewModel(private val pemasok: PemasokRepository): ViewModel() 
 
     fun getPemasok() {
         viewModelScope.launch {
-            pemasokUIState =  HomePemasokUiState.Loading
+            pemasokUIState = HomePemasokUiState.Loading
             pemasokUIState = try {
                 HomePemasokUiState.Success(pemasok.getPemasok())
             } catch (e:IOException) {

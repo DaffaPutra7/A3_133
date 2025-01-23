@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.view
+package com.example.a3_133.ui.view.pemasok
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.navigation.DestinasiNavigasi
-import com.example.a3_133.ui.viewmodel.InsertPemasokUiEvent
-import com.example.a3_133.ui.viewmodel.InsertPemasokUiState
-import com.example.a3_133.ui.viewmodel.InsertPemasokViewModel
+import com.example.a3_133.ui.viewmodel.pemasok.InsertPemasokUiEvent
+import com.example.a3_133.ui.viewmodel.pemasok.InsertPemasokUiState
+import com.example.a3_133.ui.viewmodel.pemasok.InsertPemasokViewModel
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.launch
 

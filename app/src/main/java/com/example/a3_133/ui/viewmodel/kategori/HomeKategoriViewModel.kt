@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.viewmodel
+package com.example.a3_133.ui.viewmodel.kategori
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +27,7 @@ class HomeKategoriViewModel(private val kategori: KategoriRepository): ViewModel
 
     fun getKategori() {
         viewModelScope.launch {
-            kategoriUIState =  HomeKategoriUiState.Loading
+            kategoriUIState = HomeKategoriUiState.Loading
             kategoriUIState = try {
                 HomeKategoriUiState.Success(kategori.getKategori())
             } catch (e:IOException) {

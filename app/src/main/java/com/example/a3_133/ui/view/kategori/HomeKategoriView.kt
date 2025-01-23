@@ -1,7 +1,6 @@
-package com.example.a3_133.ui.view
+package com.example.a3_133.ui.view.kategori
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,40 +38,40 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.R
-import com.example.a3_133.model.Merk
+import com.example.a3_133.model.Kategori
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.navigation.DestinasiNavigasi
-import com.example.a3_133.ui.viewmodel.HomeMerkViewModel
-import com.example.a3_133.ui.viewmodel.HomeUiState
+import com.example.a3_133.ui.viewmodel.kategori.HomeKategoriUiState
+import com.example.a3_133.ui.viewmodel.kategori.HomeKategoriViewModel
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
 
-object DestinasiHome : DestinasiNavigasi {
-    override val route = "homemerk"
-    override val titleRes = "Home Merk"
+object DestinasiHomeKategori : DestinasiNavigasi {
+    override val route = "homekategori"
+    override val titleRes = "Home Kategori"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MerkHomeScreen(
+fun KategoriHomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToUpdate: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeMerkViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: HomeKategoriViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(Unit) {
-        viewModel.getMerk()
+        viewModel.getKategori()
     }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CustomeTopAppBar(
-                title = DestinasiHome.titleRes,
+                title = DestinasiHomeKategori.titleRes,
                 canNavigateBack = false,
                 onRefresh = {
-                    viewModel.getMerk()
+                    viewModel.getKategori()
                 }
             )
         },
@@ -83,57 +81,57 @@ fun MerkHomeScreen(
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Merk")
-                Text(text = "Tambah Merk")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Kategori")
+                Text(text = "Tambah Kategori")
             }
         },
     ) { innerPadding ->
-        MerkHomeStatus(
-            homeUiState = viewModel.merkUIState,
-            retryAction = { viewModel.getMerk() },
+        KategoriHomeStatus(
+            homeKategoriUiState = viewModel.kategoriUIState,
+            retryAction = { viewModel.getKategori() },
             modifier = Modifier.padding(innerPadding),
-            onDeleteClick = { merk ->
-                viewModel.deleteMerk(merk.idMerk)
+            onDeleteClick = { kategori ->
+                viewModel.deleteKategori(kategori.idKategori)
             },
-            onUpdateClick = { merk ->
-                navigateToUpdate(merk.idMerk)
+            onUpdateClick = { kategori ->
+                navigateToUpdate(kategori.idKategori)
             }
         )
     }
 }
 
 @Composable
-fun MerkHomeStatus(
-    homeUiState: HomeUiState,
+fun KategoriHomeStatus(
+    homeKategoriUiState: HomeKategoriUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Merk) -> Unit,
-    onUpdateClick: (Merk) -> Unit
+    onDeleteClick: (Kategori) -> Unit,
+    onUpdateClick: (Kategori) -> Unit
 ) {
-    when (homeUiState) {
-        is HomeUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
-        is HomeUiState.Success ->
-            if (homeUiState.merk.isEmpty()) {
+    when (homeKategoriUiState) {
+        is HomeKategoriUiState.Loading -> OnLoadingKategori(modifier = modifier.fillMaxSize())
+        is HomeKategoriUiState.Success ->
+            if (homeKategoriUiState.kategori.isEmpty()) {
                 Box(
                     modifier = modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Tidak ada data Merk")
+                    Text(text = "Tidak ada data Kategori")
                 }
             } else {
-                MerkLayout(
-                    merk = homeUiState.merk,
+                KategoriLayout(
+                    kategori = homeKategoriUiState.kategori,
                     modifier = modifier.fillMaxWidth(),
                     onDeleteClick = onDeleteClick,
                     onUpdateClick = onUpdateClick
                 )
             }
-        is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
+        is HomeKategoriUiState.Error -> OnErrorKategori(retryAction, modifier = modifier.fillMaxSize())
     }
 }
 
 @Composable
-fun OnLoading(modifier: Modifier = Modifier){
+fun OnLoadingKategori(modifier: Modifier = Modifier){
     Image(
         modifier = modifier.size(200.dp),
         painter = painterResource(R.drawable.loading),
@@ -142,7 +140,7 @@ fun OnLoading(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier){
+fun OnErrorKategori(retryAction: () -> Unit, modifier: Modifier = Modifier){
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -160,34 +158,34 @@ fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun MerkLayout(
-    merk: List<Merk>,
+fun KategoriLayout(
+    kategori: List<Kategori>,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Merk) -> Unit,
-    onUpdateClick: (Merk) -> Unit
+    onDeleteClick: (Kategori) -> Unit,
+    onUpdateClick: (Kategori) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(merk) { mrk ->
-            MerkCard(
-                merk = mrk,
+        items(kategori) { kt ->
+            KategoriCard(
+                kategori = kt,
                 modifier = Modifier.fillMaxWidth(),
-                onDeleteClick = { onDeleteClick(mrk) },
-                onUpdateClick = { onUpdateClick(mrk) }
+                onDeleteClick = { onDeleteClick(kt) },
+                onUpdateClick = { onUpdateClick(kt) }
             )
         }
     }
 }
 
 @Composable
-fun MerkCard(
-    merk: Merk,
+fun KategoriCard(
+    kategori: Kategori,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Merk) -> Unit = {},
-    onUpdateClick: (Merk) -> Unit = {}
+    onDeleteClick: (Kategori) -> Unit = {},
+    onUpdateClick: (Kategori) -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -203,27 +201,27 @@ fun MerkCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = merk.namaMerk,
+                    text = kategori.namaKategori,
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = { onDeleteClick(merk) }) {
+                IconButton(onClick = { onDeleteClick(kategori) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
                     )
                 }
 
-                IconButton(onClick = { onUpdateClick(merk) }) {
+                IconButton(onClick = { onUpdateClick(kategori) }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Merk",
+                        contentDescription = null,
                     )
                 }
             }
 
             Text(
-                text = merk.deskripsiMerk,
+                text = kategori.deskripsiKategori,
                 style = MaterialTheme.typography.titleMedium
             )
         }

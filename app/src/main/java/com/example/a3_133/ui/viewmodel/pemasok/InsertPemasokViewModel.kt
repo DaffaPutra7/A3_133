@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.viewmodel
+package com.example.a3_133.ui.viewmodel.pemasok
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a3_133.model.Pemasok
-import com.example.a3_133.repository.MerkRepository
 import com.example.a3_133.repository.PemasokRepository
 import kotlinx.coroutines.launch
 

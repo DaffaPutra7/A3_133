@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.view
+package com.example.a3_133.ui.view.merk
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,44 +22,44 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
-import com.example.a3_133.ui.viewmodel.UpdateKategoriUiEvent
-import com.example.a3_133.ui.viewmodel.UpdateKategoriUiState
-import com.example.a3_133.ui.viewmodel.UpdateKategoriViewModel
+import com.example.a3_133.ui.viewmodel.merk.UpdateMerkViewModel
+import com.example.a3_133.ui.viewmodel.merk.UpdateUiEvent
+import com.example.a3_133.ui.viewmodel.merk.UpdateUiState
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpdateKategoriView(
+fun UpdateMerkView(
     navigateBack: () -> Unit,
     id: String,
     modifier: Modifier = Modifier,
-    viewModel: UpdateKategoriViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: UpdateMerkViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
-    val uikategoriState = viewModel.kategoriuiState
+    val uiState = viewModel.uiState
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(id) {
-        viewModel.getKategoriById(id)
+        viewModel.getMerkById(id)
     }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CustomeTopAppBar(
-                title = "Update Kategori",
+                title = "Update Merk",
                 canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
                 navigateUp = navigateBack
             )
         }
     ) { innerPadding ->
-        UpdateBodyKategori(
-            updateKategoriUiState = uikategoriState,
-            onKategoriValueChange = viewModel::updateKategoriState,
+        UpdateBodyMerk(
+            updateUiState = uiState,
+            onMerkValueChange = viewModel::updateMerkState,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.updateKategori()
+                    viewModel.updateMerk()
                     navigateBack()
                 }
             },
@@ -72,9 +72,9 @@ fun UpdateKategoriView(
 }
 
 @Composable
-fun UpdateBodyKategori(
-    updateKategoriUiState: UpdateKategoriUiState,
-    onKategoriValueChange: (UpdateKategoriUiEvent) -> Unit,
+fun UpdateBodyMerk(
+    updateUiState: UpdateUiState,
+    onMerkValueChange: (UpdateUiEvent) -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -82,9 +82,9 @@ fun UpdateBodyKategori(
         verticalArrangement = Arrangement.spacedBy(18.dp),
         modifier = modifier.padding(12.dp)
     ) {
-        FormUpdateKategori(
-            updateKategoriUiEvent = updateKategoriUiState.updateKategoriUiEvent,
-            onValueChange = onKategoriValueChange,
+        FormUpdateMerk(
+            updateUiEvent = updateUiState.updateUiEvent,
+            onValueChange = onMerkValueChange,
             modifier = Modifier.fillMaxWidth()
         )
         Button(
@@ -99,10 +99,10 @@ fun UpdateBodyKategori(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormUpdateKategori(
-    updateKategoriUiEvent: UpdateKategoriUiEvent,
+fun FormUpdateMerk(
+    updateUiEvent: UpdateUiEvent,
     modifier: Modifier = Modifier,
-    onValueChange: (UpdateKategoriUiEvent) -> Unit = {},
+    onValueChange: (UpdateUiEvent) -> Unit = {},
     enabled: Boolean = true
 ) {
     Column(
@@ -110,18 +110,18 @@ fun FormUpdateKategori(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         OutlinedTextField(
-            value = updateKategoriUiEvent.namaKategori,
-            onValueChange = { onValueChange(updateKategoriUiEvent.copy(namaKategori = it)) },
-            label = { Text("Nama Kategori") },
+            value = updateUiEvent.namaMerk,
+            onValueChange = { onValueChange(updateUiEvent.copy(namaMerk = it)) },
+            label = { Text("Nama Merk") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
 
         OutlinedTextField(
-            value = updateKategoriUiEvent.deskripsiKategori,
-            onValueChange = { onValueChange(updateKategoriUiEvent.copy(deskripsiKategori = it)) },
-            label = { Text("Deskripsi Kategori") },
+            value = updateUiEvent.deskripsiMerk,
+            onValueChange = { onValueChange(updateUiEvent.copy(deskripsiMerk = it)) },
+            label = { Text("Deskripsi Merk") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
