@@ -16,6 +16,10 @@ object PenyediaViewModel {
         initializer { HomePemasokViewModel(aplikasiA3().container.pemasokRepository) }
         initializer { InsertPemasokViewModel(aplikasiA3().container.pemasokRepository) }
         initializer { UpdatePemasokViewModel(aplikasiA3().container.pemasokRepository) }
+
+        initializer { HomeKategoriViewModel(aplikasiA3().container.kategoriRepository) }
+        initializer { InsertKategoriViewModel(aplikasiA3().container.kategoriRepository) }
+        initializer { UpdateKategoriViewModel(aplikasiA3().container.kategoriRepository) }
     }
 }
 
