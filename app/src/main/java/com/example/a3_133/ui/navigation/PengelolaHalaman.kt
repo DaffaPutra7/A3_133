@@ -9,13 +9,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.a3_133.ui.view.DestinasiEntry
+import com.example.a3_133.ui.view.DestinasiEntryKategori
 import com.example.a3_133.ui.view.DestinasiEntryPemasok
 import com.example.a3_133.ui.view.DestinasiHome
+import com.example.a3_133.ui.view.DestinasiHomeKategori
 import com.example.a3_133.ui.view.DestinasiHomePemasok
+import com.example.a3_133.ui.view.EntryKategoriScreen
 import com.example.a3_133.ui.view.EntryMerkScreen
 import com.example.a3_133.ui.view.EntryPemasokScreen
+import com.example.a3_133.ui.view.KategoriHomeScreen
 import com.example.a3_133.ui.view.MerkHomeScreen
 import com.example.a3_133.ui.view.PemasokHomeScreen
+import com.example.a3_133.ui.view.UpdateKategoriView
 import com.example.a3_133.ui.view.UpdateMerkView
 import com.example.a3_133.ui.view.UpdatePemasokView
 
@@ -24,7 +29,7 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
 
     NavHost(
         navController = navController,
-        startDestination = DestinasiHomePemasok.route,
+        startDestination = DestinasiHomeKategori.route,
         modifier = Modifier
     ) {
 
@@ -85,6 +90,38 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: return@composable
             UpdatePemasokView(
+                id = id,
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        composable(DestinasiHomeKategori.route) {
+            KategoriHomeScreen(
+                navigateToItemEntry = {navController.navigate(DestinasiEntryKategori.route)},
+                navigateToUpdate = { id ->
+                    navController.navigate("update_kategori/$id") // Navigasi ke update
+                }
+            )
+        }
+
+        composable(DestinasiEntryKategori.route) {
+            EntryKategoriScreen(navigateBack = {
+                navController.navigate(DestinasiHomeKategori.route) {
+                    popUpTo(DestinasiHomeKategori.route) {
+                        inclusive = true
+                    }
+                }
+            })
+        }
+
+        composable(
+            route = "update_kategori/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: return@composable
+            UpdateKategoriView(
                 id = id,
                 navigateBack = {
                     navController.navigateUp()
