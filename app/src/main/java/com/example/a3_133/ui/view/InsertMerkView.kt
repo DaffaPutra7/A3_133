@@ -31,7 +31,7 @@ import com.example.a3_133.ui.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.launch
 
 object DestinasiEntry : DestinasiNavigasi {
-    override val route = "item_entry"
+    override val route = "merk_entry"
     override val titleRes = "Entry Merk"
 }
 

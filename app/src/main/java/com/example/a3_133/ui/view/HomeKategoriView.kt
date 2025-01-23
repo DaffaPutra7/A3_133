@@ -46,7 +46,7 @@ import com.example.a3_133.ui.viewmodel.HomeKategoriViewModel
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
 
 object DestinasiHomeKategori : DestinasiNavigasi {
-    override val route = "home"
+    override val route = "homekategori"
     override val titleRes = "Home Kategori"
 }
 
