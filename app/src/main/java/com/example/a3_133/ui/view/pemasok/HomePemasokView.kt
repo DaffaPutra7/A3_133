@@ -55,6 +55,7 @@ object DestinasiHomePemasok : DestinasiNavigasi {
 fun PemasokHomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToUpdate: (String) -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomePemasokViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -69,17 +70,18 @@ fun PemasokHomeScreen(
         topBar = {
             CustomeTopAppBar(
                 title = DestinasiHomePemasok.titleRes,
-                canNavigateBack = false,
+                canNavigateBack = true,
                 onRefresh = {
                     viewModel.getPemasok()
-                }
+                },
+                navigateUp = navigateBack
             )
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(18.dp)
+                modifier = Modifier.padding(18.dp),
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Pemasok")
                 Text(text = "Tambah Pemasok")

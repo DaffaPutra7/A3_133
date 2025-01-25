@@ -55,6 +55,7 @@ object DestinasiHome : DestinasiNavigasi {
 fun MerkHomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToUpdate: (String) -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeMerkViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -69,10 +70,11 @@ fun MerkHomeScreen(
         topBar = {
             CustomeTopAppBar(
                 title = DestinasiHome.titleRes,
-                canNavigateBack = false,
+                canNavigateBack = true,
                 onRefresh = {
                     viewModel.getMerk()
-                }
+                },
+                navigateUp = navigateBack
             )
         },
         floatingActionButton = {

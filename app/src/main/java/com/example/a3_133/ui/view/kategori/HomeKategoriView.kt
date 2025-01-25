@@ -55,6 +55,7 @@ object DestinasiHomeKategori : DestinasiNavigasi {
 fun KategoriHomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToUpdate: (String) -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeKategoriViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -69,10 +70,11 @@ fun KategoriHomeScreen(
         topBar = {
             CustomeTopAppBar(
                 title = DestinasiHomeKategori.titleRes,
-                canNavigateBack = false,
+                canNavigateBack = true,
                 onRefresh = {
                     viewModel.getKategori()
-                }
+                },
+                navigateUp = navigateBack
             )
         },
         floatingActionButton = {
