@@ -15,17 +15,17 @@ data class Produk(
     val deskripsiProduk: String,
 
     @SerialName("harga")
-    val harga: Double,
+    val harga: String,
 
     @SerialName("stok")
-    val stok: Int,
+    val stok: String,
 
-    @SerialName("id_kategori")
-    val idKategori: String,
+    @SerialName("kategori")
+    val kategori: String,
 
-    @SerialName("id_pemasok")
-    val idPemasok: String,
+    @SerialName("pemasok")
+    val pemasok: String,
 
-    @SerialName("id_merk")
-    val idMerk: String
+    @SerialName("merk")
+    val merk: String
 )
