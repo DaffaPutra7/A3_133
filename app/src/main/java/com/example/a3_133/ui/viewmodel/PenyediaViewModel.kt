@@ -1,6 +1,7 @@
 package com.example.a3_133.ui.viewmodel
 
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -14,6 +15,10 @@ import com.example.a3_133.ui.viewmodel.merk.UpdateMerkViewModel
 import com.example.a3_133.ui.viewmodel.pemasok.HomePemasokViewModel
 import com.example.a3_133.ui.viewmodel.pemasok.InsertPemasokViewModel
 import com.example.a3_133.ui.viewmodel.pemasok.UpdatePemasokViewModel
+import com.example.a3_133.ui.viewmodel.produk.DetailProdukViewModel
+import com.example.a3_133.ui.viewmodel.produk.HomeProdukViewModel
+import com.example.a3_133.ui.viewmodel.produk.InsertProdukViewModel
+import com.example.a3_133.ui.viewmodel.produk.UpdateProdukViewModel
 
 object PenyediaViewModel {
     val Factory = viewModelFactory {
@@ -28,6 +33,16 @@ object PenyediaViewModel {
         initializer { HomeKategoriViewModel(aplikasiA3().container.kategoriRepository) }
         initializer { InsertKategoriViewModel(aplikasiA3().container.kategoriRepository) }
         initializer { UpdateKategoriViewModel(aplikasiA3().container.kategoriRepository) }
+
+        initializer { HomeProdukViewModel(aplikasiA3().container.produkRepository) }
+        initializer { InsertProdukViewModel(aplikasiA3().container.produkRepository,
+            aplikasiA3().container.kategoriRepository, aplikasiA3().container.pemasokRepository, aplikasiA3().container.merkRepository) }
+        initializer {
+            val savedStateHandle = createSavedStateHandle()
+            DetailProdukViewModel(savedStateHandle, aplikasiA3().container.produkRepository)
+        }
+        initializer { UpdateProdukViewModel(aplikasiA3().container.produkRepository,
+            aplikasiA3().container.kategoriRepository, aplikasiA3().container.pemasokRepository, aplikasiA3().container.merkRepository) }
     }
 }
 
