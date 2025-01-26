@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,9 +43,13 @@ import com.example.a3_133.R
 import com.example.a3_133.model.Pemasok
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.navigation.DestinasiNavigasi
+import com.example.a3_133.ui.view.merk.MerkLayout
+import com.example.a3_133.ui.view.merk.OnError
+import com.example.a3_133.ui.view.merk.OnLoading
 import com.example.a3_133.ui.viewmodel.pemasok.HomePemasokUiState
 import com.example.a3_133.ui.viewmodel.pemasok.HomePemasokViewModel
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
+import com.example.a3_133.ui.viewmodel.merk.HomeUiState
 
 object DestinasiHomePemasok : DestinasiNavigasi {
     override val route = "homepemasok"
@@ -81,10 +87,12 @@ fun PemasokHomeScreen(
             ExtendedFloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(18.dp),
+                containerColor = Color(0xFFFF9900),
+                contentColor = Color.White,
+                modifier = Modifier.padding(18.dp)
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Pemasok")
-                Text(text = "Tambah Pemasok")
+                Text(text = " Tambah Pemasok")
             }
         },
     ) { innerPadding ->
@@ -133,7 +141,7 @@ fun PemasokHomeStatus(
 }
 
 @Composable
-fun OnLoadingPemasok(modifier: Modifier = Modifier){
+fun OnLoadingPemasok(modifier: Modifier = Modifier) {
     Image(
         modifier = modifier.size(200.dp),
         painter = painterResource(R.drawable.loading),
@@ -142,7 +150,7 @@ fun OnLoadingPemasok(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun OnErrorPemasok(retryAction: () -> Unit, modifier: Modifier = Modifier){
+fun OnErrorPemasok(retryAction: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -150,10 +158,16 @@ fun OnErrorPemasok(retryAction: () -> Unit, modifier: Modifier = Modifier){
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_connection_error),
-            contentDescription = ""
+            contentDescription = null
         )
-        Text(text = stringResource(R.string.loading_failed), modifier.padding(16.dp))
-        Button(onClick = retryAction) {
+        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
+        Button(
+            onClick = retryAction,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFF9900),
+                contentColor = Color.White
+            )
+        ) {
             Text(stringResource(R.string.retry))
         }
     }
@@ -192,6 +206,10 @@ fun PemasokCard(
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White,
+            contentColor = Color.Black
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Column(
@@ -205,12 +223,14 @@ fun PemasokCard(
                 Text(
                     text = pemasok.namaPemasok,
                     style = MaterialTheme.typography.titleLarge,
+                    color = Color(0xFFFF9900)
                 )
                 Spacer(Modifier.weight(1f))
                 IconButton(onClick = { onDeleteClick(pemasok) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
+                        tint = Color(0xFFFF9900)
                     )
                 }
 
@@ -218,6 +238,7 @@ fun PemasokCard(
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = null,
+                        tint = Color(0xFFFF9900)
                     )
                 }
             }

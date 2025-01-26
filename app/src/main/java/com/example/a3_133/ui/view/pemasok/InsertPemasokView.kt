@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -92,6 +94,10 @@ fun EntryBodyPemasok(
         Button(
             onClick = onSaveClick,
             shape = MaterialTheme.shapes.small,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFF9900),
+                contentColor = Color.White
+            ),
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Simpan")
@@ -113,7 +119,7 @@ fun FormInputPemasok(
     ) {
         OutlinedTextField(
             value = insertpemasokUiEvent.namaPemasok,
-            onValueChange = { onValueChange(insertpemasokUiEvent.copy(namaPemasok = it))},
+            onValueChange = { onValueChange(insertpemasokUiEvent.copy(namaPemasok = it)) },
             label = { Text("Nama Pemasok") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -121,7 +127,7 @@ fun FormInputPemasok(
         )
         OutlinedTextField(
             value = insertpemasokUiEvent.alamatPemasok,
-            onValueChange = { onValueChange(insertpemasokUiEvent.copy(alamatPemasok = it))},
+            onValueChange = { onValueChange(insertpemasokUiEvent.copy(alamatPemasok = it)) },
             label = { Text("Alamat Pemasok") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -129,7 +135,7 @@ fun FormInputPemasok(
         )
         OutlinedTextField(
             value = insertpemasokUiEvent.teleponPemasok,
-            onValueChange = { onValueChange(insertpemasokUiEvent.copy(teleponPemasok = it))},
+            onValueChange = { onValueChange(insertpemasokUiEvent.copy(teleponPemasok = it)) },
             label = { Text("Telepon Pemasok") },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
