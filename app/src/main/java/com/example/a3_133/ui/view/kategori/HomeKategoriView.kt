@@ -1,6 +1,7 @@
 package com.example.a3_133.ui.view.kategori
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,9 +34,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.R
@@ -66,7 +71,13 @@ fun KategoriHomeScreen(
     }
 
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color(0xFFFFA500), Color(0xFFFF4500))
+                )
+            ),
         topBar = {
             CustomeTopAppBar(
                 title = DestinasiHomeKategori.titleRes,
@@ -81,10 +92,12 @@ fun KategoriHomeScreen(
             ExtendedFloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
+                containerColor = Color(0xFFFF9900),
+                contentColor = Color.White,
                 modifier = Modifier.padding(18.dp)
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Kategori")
-                Text(text = "Tambah Kategori")
+                Text(text = " Tambah Kategori")
             }
         },
     ) { innerPadding ->
@@ -133,7 +146,7 @@ fun KategoriHomeStatus(
 }
 
 @Composable
-fun OnLoadingKategori(modifier: Modifier = Modifier){
+fun OnLoadingKategori(modifier: Modifier = Modifier) {
     Image(
         modifier = modifier.size(200.dp),
         painter = painterResource(R.drawable.loading),
@@ -142,7 +155,7 @@ fun OnLoadingKategori(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun OnErrorKategori(retryAction: () -> Unit, modifier: Modifier = Modifier){
+fun OnErrorKategori(retryAction: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -150,10 +163,19 @@ fun OnErrorKategori(retryAction: () -> Unit, modifier: Modifier = Modifier){
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_connection_error),
-            contentDescription = ""
+            contentDescription = null
         )
-        Text(text = stringResource(R.string.loading_failed), modifier.padding(16.dp))
-        Button(onClick = retryAction) {
+        Text(
+            text = stringResource(R.string.loading_failed),
+            modifier = Modifier.padding(16.dp)
+        )
+        Button(
+            onClick = retryAction,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFF9900),
+                contentColor = Color.White
+            )
+        ) {
             Text(stringResource(R.string.retry))
         }
     }
@@ -190,8 +212,12 @@ fun KategoriCard(
     onUpdateClick: (Kategori) -> Unit = {}
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.padding(vertical = 8.dp), // Menambah padding vertikal untuk ruang yang lebih baik
         shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White,
+            contentColor = Color.Black
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Column(
@@ -205,26 +231,31 @@ fun KategoriCard(
                 Text(
                     text = kategori.namaKategori,
                     style = MaterialTheme.typography.titleLarge,
+                    color = Color(0xFFFF9900),
+                    maxLines = 2, // Mengizinkan teks dilanjutkan ke baris berikutnya
+                    overflow = TextOverflow.Ellipsis, // Memotong teks dengan elipsis jika terlalu panjang
+                    modifier = Modifier.weight(1f) // Mengatur lebar teks
                 )
-                Spacer(Modifier.weight(1f))
                 IconButton(onClick = { onDeleteClick(kategori) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = null,
+                        contentDescription = "Hapus Kategori",
+                        tint = Color(0xFFFF9900)
                     )
                 }
 
                 IconButton(onClick = { onUpdateClick(kategori) }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = null,
+                        contentDescription = "Edit Kategori",
+                        tint = Color(0xFFFF9900)
                     )
                 }
             }
 
             Text(
-                text = kategori.deskripsiKategori,
-                style = MaterialTheme.typography.titleMedium
+                text = "Deskripsi : ${ kategori.deskripsiKategori}",
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
