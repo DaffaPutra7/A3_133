@@ -36,7 +36,7 @@ fun DetailProdukView(
     viewModel: DetailProdukViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     // Fetch product details using the idProduk
-    LaunchedEffect(idProduk) {
+    LaunchedEffect(idProduk, viewModel.updateTrigger) {
         viewModel.getProdukById(idProduk)
     }
 
@@ -89,7 +89,10 @@ fun DetailProdukView(
                         Text(text = " Lihat Kategori")
                     }
                     ExtendedFloatingActionButton(
-                        onClick = { navigateToEdit((uiState as DetailProdukUiState.Success).produk.idProduk) },
+                        onClick = {
+                            navigateToEdit((uiState as DetailProdukUiState.Success).produk.idProduk)
+                            viewModel.updateData() // Panggil fungsi updateData setelah update data selesai
+                        },
                         shape = MaterialTheme.shapes.medium,
                         containerColor = Color(0xFFFF9900),
                         contentColor = Color.White,

@@ -27,6 +27,9 @@ class DetailProdukViewModel(
     private val _detailProdukUiState = MutableStateFlow<DetailProdukUiState>(DetailProdukUiState.Loading)
     val detailProdukUiState: StateFlow<DetailProdukUiState> = _detailProdukUiState.asStateFlow()
 
+    var updateTrigger = MutableStateFlow(false)
+        private set
+
     init {
         getProdukById(_idProduk)
     }
@@ -42,6 +45,14 @@ class DetailProdukViewModel(
             } catch (e: HttpException) {
                 DetailProdukUiState.Error("Terjadi kesalahan server")
             }
+        }
+    }
+
+    fun updateData() {
+        viewModelScope.launch {
+            // Lakukan update data
+            // Setelah selesai, ubah nilai updateTrigger untuk memicu refresh data
+            updateTrigger.value = !updateTrigger.value
         }
     }
 }
