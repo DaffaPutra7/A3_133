@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -81,10 +83,12 @@ fun MerkHomeScreen(
             ExtendedFloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
+                containerColor = Color(0xFFFF9900),
+                contentColor = Color.White,
                 modifier = Modifier.padding(18.dp)
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Merk")
-                Text(text = "Tambah Merk")
+                Text(text = " Tambah Merk")
             }
         },
     ) { innerPadding ->
@@ -150,10 +154,16 @@ fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier){
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_connection_error),
-            contentDescription = ""
+            contentDescription = null
         )
-        Text(text = stringResource(R.string.loading_failed), modifier.padding(16.dp))
-        Button(onClick = retryAction) {
+        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
+        Button(
+            onClick = retryAction,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFF9900),
+                contentColor = Color.White
+            )
+        ) {
             Text(stringResource(R.string.retry))
         }
     }
@@ -192,6 +202,10 @@ fun MerkCard(
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White,
+            contentColor = Color.Black
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Column(
@@ -205,19 +219,22 @@ fun MerkCard(
                 Text(
                     text = merk.namaMerk,
                     style = MaterialTheme.typography.titleLarge,
+                    color = Color(0xFFFF9900)
                 )
                 Spacer(Modifier.weight(1f))
                 IconButton(onClick = { onDeleteClick(merk) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
+                        tint = Color(0xFFFF9900)
                     )
                 }
 
                 IconButton(onClick = { onUpdateClick(merk) }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Merk",
+                        contentDescription = null,
+                        tint = Color(0xFFFF9900)
                     )
                 }
             }
