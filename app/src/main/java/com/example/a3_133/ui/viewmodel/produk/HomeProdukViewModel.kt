@@ -18,7 +18,7 @@ sealed class HomeProdukUiState {
 }
 
 class HomeProdukViewModel(private val produk: ProdukRepository): ViewModel() {
-    var produkUIState : HomeProdukUiState by mutableStateOf(HomeProdukUiState.Loading)
+    var produkUiState : HomeProdukUiState by mutableStateOf(HomeProdukUiState.Loading)
         private set
 
     init {
@@ -27,8 +27,8 @@ class HomeProdukViewModel(private val produk: ProdukRepository): ViewModel() {
 
     fun getProduk() {
         viewModelScope.launch {
-            produkUIState = HomeProdukUiState.Loading
-            produkUIState = try {
+            produkUiState = HomeProdukUiState.Loading
+            produkUiState = try {
                 HomeProdukUiState.Success(produk.getProduk())
             } catch (e:IOException) {
                 HomeProdukUiState.Error
@@ -44,9 +44,9 @@ class HomeProdukViewModel(private val produk: ProdukRepository): ViewModel() {
                 produk.deleteProduk(id_produk)
                 getProduk() // Refresh
             } catch (e: IOException) {
-                produkUIState = HomeProdukUiState.Error
+                produkUiState = HomeProdukUiState.Error
             } catch (e: HttpException) {
-                produkUIState = HomeProdukUiState.Error
+                produkUiState = HomeProdukUiState.Error
             }
         }
     }

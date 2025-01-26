@@ -20,23 +20,22 @@ sealed class DetailProdukUiState {
 
 class DetailProdukViewModel(
     savedStateHandle: SavedStateHandle,
-    private val pr: ProdukRepository
+    private val produkRepository: ProdukRepository
 ) : ViewModel() {
-    private val _idProduk: String = checkNotNull(savedStateHandle["id_produk"])
+    private val _idProduk: String = checkNotNull(savedStateHandle["id"])
 
     private val _detailProdukUiState = MutableStateFlow<DetailProdukUiState>(DetailProdukUiState.Loading)
     val detailProdukUiState: StateFlow<DetailProdukUiState> = _detailProdukUiState.asStateFlow()
 
-    // Init = Program yang pertama kali dijalankan, yang ada didalam {}
     init {
         getProdukById(_idProduk)
     }
 
-    private fun getProdukById(idProduk: String) {
+    fun getProdukById(idProduk: String) {
         viewModelScope.launch {
             _detailProdukUiState.value = DetailProdukUiState.Loading
             _detailProdukUiState.value = try {
-                val produk = pr.getProdukById(idProduk)
+                val produk = produkRepository.getProdukById(idProduk)
                 DetailProdukUiState.Success(produk)
             } catch (e: IOException) {
                 DetailProdukUiState.Error("Terjadi kesalahan jaringan")
