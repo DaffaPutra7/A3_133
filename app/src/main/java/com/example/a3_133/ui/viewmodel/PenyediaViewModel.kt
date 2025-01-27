@@ -12,6 +12,7 @@ import com.example.a3_133.ui.viewmodel.kategori.UpdateKategoriViewModel
 import com.example.a3_133.ui.viewmodel.merk.HomeMerkViewModel
 import com.example.a3_133.ui.viewmodel.merk.InsertMerkViewModel
 import com.example.a3_133.ui.viewmodel.merk.UpdateMerkViewModel
+import com.example.a3_133.ui.viewmodel.pemasok.DetailPemasokViewModel
 import com.example.a3_133.ui.viewmodel.pemasok.HomePemasokViewModel
 import com.example.a3_133.ui.viewmodel.pemasok.InsertPemasokViewModel
 import com.example.a3_133.ui.viewmodel.pemasok.UpdatePemasokViewModel
@@ -29,6 +30,10 @@ object PenyediaViewModel {
         initializer { HomePemasokViewModel(aplikasiA3().container.pemasokRepository) }
         initializer { InsertPemasokViewModel(aplikasiA3().container.pemasokRepository) }
         initializer { UpdatePemasokViewModel(aplikasiA3().container.pemasokRepository) }
+        initializer {
+            val savedStateHandle = createSavedStateHandle()
+            DetailPemasokViewModel(savedStateHandle, aplikasiA3().container.pemasokRepository)
+        }
 
         initializer { HomeKategoriViewModel(aplikasiA3().container.kategoriRepository) }
         initializer { InsertKategoriViewModel(aplikasiA3().container.kategoriRepository) }
