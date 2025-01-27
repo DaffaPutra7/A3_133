@@ -226,6 +226,9 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 onDetailClick = { id ->
                     navController.navigate("${DestinasiDetailProduk.route}/$id")
                 },
+                navigateToUpdate = { id ->
+                    navController.navigate("update_produk/$id") // Navigasi ke update
+                },
                 navigateBack = {
                     navController.navigate(DestinasiHomeScreen.route) {
                         popUpTo(DestinasiHomeScreen.route) {
@@ -264,9 +267,6 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 idProduk = id,
                 navigateBack = {
                     navController.navigateUp()
-                },
-                navigateToEdit = { idProduk ->
-                    navController.navigate("update_produk/$idProduk")
                 },
                 navigateToKategori = {
                     navController.navigate(DestinasiHomeKategori.route)

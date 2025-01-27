@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -43,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.R
+import com.example.a3_133.model.Merk
 import com.example.a3_133.model.Produk
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.customwidget.Footbar
@@ -60,6 +62,7 @@ object DestinasiHomeProduk : DestinasiNavigasi {
 @Composable
 fun HomeProdukScreen(
     navigateToItemEntry: () -> Unit,
+    navigateToUpdate: (String) -> Unit,
     navigateBack: () -> Unit,
     onDetailClick: (String) -> Unit,
     onProdukClick: () -> Unit,
@@ -114,6 +117,9 @@ fun HomeProdukScreen(
                 viewModel.deleteProduk(it.idProduk)
                 viewModel.getProduk()
             },
+            onUpdateClick = { produk ->
+                navigateToUpdate(produk.idProduk)
+            },
             onDetailClick = onDetailClick
         )
     }
@@ -125,7 +131,8 @@ fun HomeProdukStatus(
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     onDeleteClick: (Produk) -> Unit = {},
-    onDetailClick: (String) -> Unit
+    onDetailClick: (String) -> Unit,
+    onUpdateClick: (Produk) -> Unit
 ) {
     when (homeProdukUiState) {
         is HomeProdukUiState.Loading -> OnLoadingProduk(modifier = modifier.fillMaxSize())
@@ -143,7 +150,8 @@ fun HomeProdukStatus(
                     produk = homeProdukUiState.produk,
                     modifier = modifier.fillMaxWidth(),
                     onDetailClick = { produk -> onDetailClick(produk.idProduk) },
-                    onDeleteClick = { produk -> onDeleteClick(produk) }
+                    onDeleteClick = { produk -> onDeleteClick(produk) },
+                    onUpdateClick = onUpdateClick
                 )
             }
         is HomeProdukUiState.Error -> OnErrorProduk(retryAction, modifier = modifier.fillMaxSize())
@@ -188,7 +196,8 @@ fun ProdukLayout(
     produk: List<Produk>,
     modifier: Modifier = Modifier,
     onDetailClick: (Produk) -> Unit,
-    onDeleteClick: (Produk) -> Unit = {}
+    onDeleteClick: (Produk) -> Unit = {},
+    onUpdateClick: (Produk) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -200,7 +209,8 @@ fun ProdukLayout(
                 produk = pr,
                 modifier = Modifier.fillMaxWidth(),
                 onDeleteClick = { onDeleteClick(pr) },
-                onDetailClick = { onDetailClick(pr) }
+                onDetailClick = { onDetailClick(pr) },
+                onUpdateClick = { onUpdateClick(pr) }
             )
         }
     }
@@ -211,6 +221,7 @@ fun ProdukCard(
     produk: Produk,
     modifier: Modifier = Modifier,
     onDeleteClick: (Produk) -> Unit = {},
+    onUpdateClick: (Produk) -> Unit = {},
     onDetailClick: (Produk) -> Unit = {}
 ) {
     Card(
@@ -242,6 +253,13 @@ fun ProdukCard(
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Hapus Produk",
+                        tint = Color(0xFFFF9900)
+                    )
+                }
+                IconButton(onClick = { onUpdateClick(produk) }) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = null,
                         tint = Color(0xFFFF9900)
                     )
                 }
