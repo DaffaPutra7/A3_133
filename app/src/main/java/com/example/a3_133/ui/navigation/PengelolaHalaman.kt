@@ -10,11 +10,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.a3_133.ui.home.DestinasiHomeScreen
 import com.example.a3_133.ui.home.HomeScreen
+import com.example.a3_133.ui.view.kategori.DestinasiDetailKategori
 import com.example.a3_133.ui.view.merk.DestinasiEntry
 import com.example.a3_133.ui.view.kategori.DestinasiEntryKategori
 import com.example.a3_133.ui.view.pemasok.DestinasiEntryPemasok
 import com.example.a3_133.ui.view.merk.DestinasiHome
 import com.example.a3_133.ui.view.kategori.DestinasiHomeKategori
+import com.example.a3_133.ui.view.kategori.DetailKategoriView
 import com.example.a3_133.ui.view.pemasok.DestinasiHomePemasok
 import com.example.a3_133.ui.view.kategori.EntryKategoriScreen
 import com.example.a3_133.ui.view.merk.EntryMerkScreen
@@ -167,6 +169,9 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
         composable(DestinasiHomeKategori.route) {
             KategoriHomeScreen(
                 navigateToItemEntry = {navController.navigate(DestinasiEntryKategori.route)},
+                onDetailClick = { id ->
+                    navController.navigate("${DestinasiDetailKategori.route}/$id")
+                },
                 navigateToUpdate = { id ->
                     navController.navigate("update_kategori/$id") // Navigasi ke update
                 },
@@ -175,6 +180,19 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                         inclusive = true
                     }
                 } }
+            )
+        }
+
+        composable(
+            route = "${DestinasiDetailKategori.route}/{id}",
+            arguments = listOf(navArgument(name = "id") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: return@composable
+            DetailKategoriView(
+                idKategori = id,
+                navigateBack = {
+                    navController.navigateUp()
+                }
             )
         }
 

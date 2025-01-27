@@ -1,4 +1,4 @@
-package com.example.a3_133.ui.view.merk
+package com.example.a3_133.ui.view.kategori
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,50 +24,50 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.a3_133.model.Merk
+import com.example.a3_133.model.Kategori
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.navigation.DestinasiNavigasi
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
-import com.example.a3_133.ui.viewmodel.merk.DetailMerkUiState
-import com.example.a3_133.ui.viewmodel.merk.DetailMerkViewModel
+import com.example.a3_133.ui.viewmodel.kategori.DetailKategoriUiState
+import com.example.a3_133.ui.viewmodel.kategori.DetailKategoriViewModel
 
-object DestinasiDetailMerk : DestinasiNavigasi {
-    override val route = "detailmerk"
-    override val titleRes = "Detail Merk"
+object DestinasiDetailKategori : DestinasiNavigasi {
+    override val route = "detailkategori"
+    override val titleRes = "Detail Kategori"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailMerkView(
-    idMerk: String,
+fun DetailKategoriView(
+    idKategori: String,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DetailMerkViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: DetailKategoriViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
-    LaunchedEffect(idMerk) {
-        viewModel.getMerkById(idMerk)
+    LaunchedEffect(idKategori) {
+        viewModel.getKategoriById(idKategori)
     }
 
     Scaffold(
         topBar = {
             CustomeTopAppBar(
-                title = "Detail Merk",
+                title = "Detail Kategori",
                 canNavigateBack = true,
                 navigateUp = navigateBack
             )
         }
     ) { padding ->
-        val uiState by viewModel.detailMerkUiState.collectAsState()
+        val uiState by viewModel.detailKategoriUiState.collectAsState()
 
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(padding)
                 .padding(horizontal = 16.dp) // Menghilangkan padding vertikal
                 .fillMaxSize()
         ) {
             Spacer(modifier = Modifier.height(8.dp)) // Memberi jarak antara top app bar dan card detail
-            BodyDetailMerk(
-                detailMerkUiState = uiState,
+            BodyDetailKategori(
+                detailKategoriUiState = uiState,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -75,12 +75,12 @@ fun DetailMerkView(
 }
 
 @Composable
-fun BodyDetailMerk(
-    detailMerkUiState: DetailMerkUiState,
+fun BodyDetailKategori(
+    detailKategoriUiState: DetailKategoriUiState,
     modifier: Modifier = Modifier
 ) {
-    when (detailMerkUiState) {
-        is DetailMerkUiState.Loading -> {
+    when (detailKategoriUiState) {
+        is DetailKategoriUiState.Loading -> {
             Box(
                 modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -88,23 +88,23 @@ fun BodyDetailMerk(
                 CircularProgressIndicator()
             }
         }
-        is DetailMerkUiState.Success -> {
-            val merk = detailMerkUiState.merk
+        is DetailKategoriUiState.Success -> {
+            val kategori = detailKategoriUiState.kategori
             Column(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp) // Menghilangkan padding vertikal
             ) {
-                ItemDetailMerk(merk = merk)
+                ItemDetailKategori(kategori = kategori)
             }
         }
-        is DetailMerkUiState.Error -> {
+        is DetailKategoriUiState.Error -> {
             Box(
                 modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = detailMerkUiState.message,
+                    text = detailKategoriUiState.message,
                     modifier = Modifier.padding(16.dp)
                 )
             }
@@ -113,8 +113,8 @@ fun BodyDetailMerk(
 }
 
 @Composable
-fun ItemDetailMerk(
-    merk: Merk,
+fun ItemDetailKategori(
+    kategori: Kategori,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -129,19 +129,19 @@ fun ItemDetailMerk(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            ComponentDetailMerk(judul = "ID Merk", isinya = merk.idMerk)
+            ComponentDetailKategori(judul = "ID Kategori", isinya = kategori.idKategori)
             Spacer(modifier = Modifier.height(8.dp))
 
-            ComponentDetailMerk(judul = "Nama Merk", isinya = merk.namaMerk)
+            ComponentDetailKategori(judul = "Nama Kategori", isinya = kategori.namaKategori)
             Spacer(modifier = Modifier.height(8.dp))
 
-            ComponentDetailMerk(judul = "Deskripsi Merk", isinya = merk.deskripsiMerk)
+            ComponentDetailKategori(judul = "Deskripsi Kategori", isinya = kategori.deskripsiKategori)
         }
     }
 }
 
 @Composable
-fun ComponentDetailMerk(
+fun ComponentDetailKategori(
     judul: String,
     isinya: String,
     modifier: Modifier = Modifier

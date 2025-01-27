@@ -2,6 +2,7 @@ package com.example.a3_133.ui.view.kategori
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.R
 import com.example.a3_133.model.Kategori
+import com.example.a3_133.model.Merk
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.navigation.DestinasiNavigasi
 import com.example.a3_133.ui.viewmodel.kategori.HomeKategoriUiState
@@ -61,6 +63,7 @@ fun KategoriHomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToUpdate: (String) -> Unit,
     navigateBack: () -> Unit,
+    onDetailClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeKategoriViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -110,7 +113,8 @@ fun KategoriHomeScreen(
             },
             onUpdateClick = { kategori ->
                 navigateToUpdate(kategori.idKategori)
-            }
+            },
+            onDetailClick = onDetailClick
         )
     }
 }
@@ -121,6 +125,7 @@ fun KategoriHomeStatus(
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     onDeleteClick: (Kategori) -> Unit,
+    onDetailClick: (String) -> Unit,
     onUpdateClick: (Kategori) -> Unit
 ) {
     when (homeKategoriUiState) {
@@ -137,6 +142,7 @@ fun KategoriHomeStatus(
                 KategoriLayout(
                     kategori = homeKategoriUiState.kategori,
                     modifier = modifier.fillMaxWidth(),
+                    onDetailClick = { kategori -> onDetailClick(kategori.idKategori) },
                     onDeleteClick = onDeleteClick,
                     onUpdateClick = onUpdateClick
                 )
@@ -185,6 +191,7 @@ fun OnErrorKategori(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 fun KategoriLayout(
     kategori: List<Kategori>,
     modifier: Modifier = Modifier,
+    onDetailClick: (Kategori) -> Unit,
     onDeleteClick: (Kategori) -> Unit,
     onUpdateClick: (Kategori) -> Unit
 ) {
@@ -198,6 +205,7 @@ fun KategoriLayout(
                 kategori = kt,
                 modifier = Modifier.fillMaxWidth(),
                 onDeleteClick = { onDeleteClick(kt) },
+                onDetailClick = { onDetailClick(kt) },
                 onUpdateClick = { onUpdateClick(kt) }
             )
         }
@@ -209,10 +217,13 @@ fun KategoriCard(
     kategori: Kategori,
     modifier: Modifier = Modifier,
     onDeleteClick: (Kategori) -> Unit = {},
-    onUpdateClick: (Kategori) -> Unit = {}
+    onUpdateClick: (Kategori) -> Unit = {},
+    onDetailClick: (Kategori) -> Unit = {}
 ) {
     Card(
-        modifier = modifier.padding(vertical = 8.dp), // Menambah padding vertikal untuk ruang yang lebih baik
+        modifier = modifier
+            .clickable { onDetailClick(kategori) }
+            .padding(vertical = 8.dp), // Menambah padding vertikal untuk ruang yang lebih baik
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
