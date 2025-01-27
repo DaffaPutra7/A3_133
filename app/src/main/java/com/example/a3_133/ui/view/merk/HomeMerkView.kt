@@ -1,6 +1,7 @@
 package com.example.a3_133.ui.view.merk
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.R
 import com.example.a3_133.model.Merk
+import com.example.a3_133.model.Pemasok
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.navigation.DestinasiNavigasi
 import com.example.a3_133.ui.viewmodel.merk.HomeMerkViewModel
@@ -58,6 +60,7 @@ fun MerkHomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToUpdate: (String) -> Unit,
     navigateBack: () -> Unit,
+    onDetailClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeMerkViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -101,7 +104,8 @@ fun MerkHomeScreen(
             },
             onUpdateClick = { merk ->
                 navigateToUpdate(merk.idMerk)
-            }
+            },
+            onDetailClick = onDetailClick
         )
     }
 }
@@ -112,6 +116,7 @@ fun MerkHomeStatus(
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     onDeleteClick: (Merk) -> Unit,
+    onDetailClick: (String) -> Unit,
     onUpdateClick: (Merk) -> Unit
 ) {
     when (homeUiState) {
@@ -128,6 +133,7 @@ fun MerkHomeStatus(
                 MerkLayout(
                     merk = homeUiState.merk,
                     modifier = modifier.fillMaxWidth(),
+                    onDetailClick = { merk -> onDetailClick(merk.idMerk) },
                     onDeleteClick = onDeleteClick,
                     onUpdateClick = onUpdateClick
                 )
@@ -173,6 +179,7 @@ fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier){
 fun MerkLayout(
     merk: List<Merk>,
     modifier: Modifier = Modifier,
+    onDetailClick: (Merk) -> Unit,
     onDeleteClick: (Merk) -> Unit,
     onUpdateClick: (Merk) -> Unit
 ) {
@@ -186,6 +193,7 @@ fun MerkLayout(
                 merk = mrk,
                 modifier = Modifier.fillMaxWidth(),
                 onDeleteClick = { onDeleteClick(mrk) },
+                onDetailClick = { onDetailClick(mrk) },
                 onUpdateClick = { onUpdateClick(mrk) }
             )
         }
@@ -197,10 +205,12 @@ fun MerkCard(
     merk: Merk,
     modifier: Modifier = Modifier,
     onDeleteClick: (Merk) -> Unit = {},
-    onUpdateClick: (Merk) -> Unit = {}
+    onUpdateClick: (Merk) -> Unit = {},
+    onDetailClick: (Merk) -> Unit = {}
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier
+            .clickable { onDetailClick(merk) },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
