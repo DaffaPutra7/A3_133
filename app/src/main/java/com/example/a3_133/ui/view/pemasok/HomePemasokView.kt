@@ -1,6 +1,7 @@
 package com.example.a3_133.ui.view.pemasok
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.R
 import com.example.a3_133.model.Pemasok
+import com.example.a3_133.model.Produk
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.navigation.DestinasiNavigasi
 import com.example.a3_133.ui.view.merk.MerkLayout
@@ -62,6 +64,7 @@ fun PemasokHomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToUpdate: (String) -> Unit,
     navigateBack: () -> Unit,
+    onDetailClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomePemasokViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -105,7 +108,8 @@ fun PemasokHomeScreen(
             },
             onUpdateClick = { pemasok ->
                 navigateToUpdate(pemasok.idPemasok)
-            }
+            },
+            onDetailClick = onDetailClick
         )
     }
 }
@@ -116,6 +120,7 @@ fun PemasokHomeStatus(
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     onDeleteClick: (Pemasok) -> Unit,
+    onDetailClick: (String) -> Unit,
     onUpdateClick: (Pemasok) -> Unit
 ) {
     when (homePemasokUiState) {
@@ -132,6 +137,7 @@ fun PemasokHomeStatus(
                 PemasokLayout(
                     pemasok = homePemasokUiState.pemasok,
                     modifier = modifier.fillMaxWidth(),
+                    onDetailClick = { pemasok -> onDetailClick(pemasok.idPemasok) },
                     onDeleteClick = onDeleteClick,
                     onUpdateClick = onUpdateClick
                 )
@@ -177,6 +183,7 @@ fun OnErrorPemasok(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 fun PemasokLayout(
     pemasok: List<Pemasok>,
     modifier: Modifier = Modifier,
+    onDetailClick: (Pemasok) -> Unit,
     onDeleteClick: (Pemasok) -> Unit,
     onUpdateClick: (Pemasok) -> Unit
 ) {
@@ -190,6 +197,7 @@ fun PemasokLayout(
                 pemasok = pmk,
                 modifier = Modifier.fillMaxWidth(),
                 onDeleteClick = { onDeleteClick(pmk) },
+                onDetailClick = { onDetailClick(pmk) },
                 onUpdateClick = { onUpdateClick(pmk) }
             )
         }
@@ -201,10 +209,12 @@ fun PemasokCard(
     pemasok: Pemasok,
     modifier: Modifier = Modifier,
     onDeleteClick: (Pemasok) -> Unit = {},
-    onUpdateClick: (Pemasok) -> Unit = {}
+    onUpdateClick: (Pemasok) -> Unit = {},
+    onDetailClick: (Pemasok) -> Unit = {}
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier
+            .clickable { onDetailClick(pemasok) },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = Color.White,

@@ -24,6 +24,8 @@ import com.example.a3_133.ui.view.merk.MerkHomeScreen
 import com.example.a3_133.ui.view.pemasok.PemasokHomeScreen
 import com.example.a3_133.ui.view.kategori.UpdateKategoriView
 import com.example.a3_133.ui.view.merk.UpdateMerkView
+import com.example.a3_133.ui.view.pemasok.DestinasiDetailPemasok
+import com.example.a3_133.ui.view.pemasok.DetailPemasokView
 import com.example.a3_133.ui.view.pemasok.UpdatePemasokView
 import com.example.a3_133.ui.view.produk.DestinasiDetailProduk
 import com.example.a3_133.ui.view.produk.DestinasiEntryProduk
@@ -93,6 +95,9 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
         composable(DestinasiHomePemasok.route) {
             PemasokHomeScreen(
                 navigateToItemEntry = {navController.navigate(DestinasiEntryPemasok.route)},
+                onDetailClick = { id ->
+                    navController.navigate("${DestinasiDetailPemasok.route}/$id")
+                },
                 navigateToUpdate = { id ->
                     navController.navigate("update_pemasok/$id") // Navigasi ke update
                 },
@@ -101,6 +106,19 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                         inclusive = true
                     }
                 } }
+            )
+        }
+
+        composable(
+            route = "${DestinasiDetailPemasok.route}/{id}",
+            arguments = listOf(navArgument(name = "id") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: return@composable
+            DetailPemasokView(
+                idPemasok = id,
+                navigateBack = {
+                    navController.navigateUp()
+                }
             )
         }
 
