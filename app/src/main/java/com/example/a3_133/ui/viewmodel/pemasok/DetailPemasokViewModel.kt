@@ -27,9 +27,6 @@ class DetailPemasokViewModel(
     private val _detailPemasokUiState = MutableStateFlow<DetailPemasokUiState>(DetailPemasokUiState.Loading)
     val detailPemasokUiState: StateFlow<DetailPemasokUiState> = _detailPemasokUiState.asStateFlow()
 
-    var updateTrigger = MutableStateFlow(false)
-        private set
-
     init {
         getPemasokById(_idPemasok)
     }

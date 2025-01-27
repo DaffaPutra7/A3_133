@@ -257,11 +257,6 @@ fun PemasokCard(
                 text = pemasok.alamatPemasok,
                 style = MaterialTheme.typography.titleMedium
             )
-
-            Text(
-                text = pemasok.teleponPemasok,
-                style = MaterialTheme.typography.titleMedium
-            )
         }
     }
 }

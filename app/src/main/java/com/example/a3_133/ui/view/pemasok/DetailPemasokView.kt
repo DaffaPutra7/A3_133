@@ -44,7 +44,7 @@ fun DetailPemasokView(
     modifier: Modifier = Modifier,
     viewModel: DetailPemasokViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
-    LaunchedEffect(idPemasok, viewModel.updateTrigger) {
+    LaunchedEffect(idPemasok) {
         viewModel.getPemasokById(idPemasok)
     }
 
