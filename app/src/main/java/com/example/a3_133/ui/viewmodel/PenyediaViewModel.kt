@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.a3_133.A3Applications
+import com.example.a3_133.ui.viewmodel.kategori.DetailKategoriViewModel
 import com.example.a3_133.ui.viewmodel.kategori.HomeKategoriViewModel
 import com.example.a3_133.ui.viewmodel.kategori.InsertKategoriViewModel
 import com.example.a3_133.ui.viewmodel.kategori.UpdateKategoriViewModel
@@ -43,6 +44,10 @@ object PenyediaViewModel {
         initializer { HomeKategoriViewModel(aplikasiA3().container.kategoriRepository) }
         initializer { InsertKategoriViewModel(aplikasiA3().container.kategoriRepository) }
         initializer { UpdateKategoriViewModel(aplikasiA3().container.kategoriRepository) }
+        initializer {
+            val savedStateHandle = createSavedStateHandle()
+            DetailKategoriViewModel(savedStateHandle, aplikasiA3().container.kategoriRepository)
+        }
 
         initializer { HomeProdukViewModel(aplikasiA3().container.produkRepository) }
         initializer { InsertProdukViewModel(aplikasiA3().container.produkRepository,
