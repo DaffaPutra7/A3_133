@@ -30,13 +30,12 @@ object DestinasiDetailProduk : DestinasiNavigasi {
 fun DetailProdukView(
     idProduk: String,
     navigateBack: () -> Unit,
-    navigateToEdit: (String) -> Unit,
     navigateToKategori: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailProdukViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     // Fetch product details using the idProduk
-    LaunchedEffect(idProduk, viewModel.updateTrigger) {
+    LaunchedEffect(idProduk) {
         viewModel.getProdukById(idProduk)
     }
 
@@ -52,7 +51,7 @@ fun DetailProdukView(
         val uiState by viewModel.detailProdukUiState.collectAsState()
 
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(padding)
                 .padding(horizontal = 16.dp) // Menghilangkan padding vertikal
                 .fillMaxSize()
@@ -87,19 +86,6 @@ fun DetailProdukView(
                     ) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = "Lihat Kategori")
                         Text(text = " Lihat Kategori")
-                    }
-                    ExtendedFloatingActionButton(
-                        onClick = {
-                            navigateToEdit((uiState as DetailProdukUiState.Success).produk.idProduk)
-                            viewModel.updateData() // Panggil fungsi updateData setelah update data selesai
-                        },
-                        shape = MaterialTheme.shapes.medium,
-                        containerColor = Color(0xFFFF9900),
-                        contentColor = Color.White,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Produk")
-                        Text(text = " Edit Produk")
                     }
                 }
             }
