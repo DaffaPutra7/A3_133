@@ -13,9 +13,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,6 +50,17 @@ fun EntryKategoriScreen(
 ){
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(viewModel.kategoriuiState.snackBarMessage) {
+        viewModel.kategoriuiState.snackBarMessage?.let { message ->
+            val result = snackbarHostState.showSnackbar(message)
+            if (result == SnackbarResult.ActionPerformed) {
+                // Handle action
+            }
+            viewModel.resetSnackBarMessage()
+        }
+    }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -55,7 +71,8 @@ fun EntryKategoriScreen(
                 scrollBehavior = scrollBehavior,
                 navigateUp = navigateBack
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
         EntryBodyKategori(
             insertKategoriUiState = viewModel.kategoriuiState,
@@ -63,7 +80,9 @@ fun EntryKategoriScreen(
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.insertKategori()
-                    navigateBack()
+                    if (viewModel.kategoriuiState.snackBarMessage == null) {
+                        navigateBack()
+                    }
                 }
             },
             modifier = Modifier

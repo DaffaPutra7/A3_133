@@ -39,13 +39,13 @@ class InsertMerkViewModel(private val merk: MerkRepository) : ViewModel() {
                         insertUiEvent = InsertUiEvent(),
                         isEntryValid = MerkErrorState()
                     )
-                    delay(3000)
+                    delay(5000)
                     resetSnackBarMessage()
                 } catch (e: Exception) {
                     uiState = uiState.copy(snackBarMessage = "Data Merk Gagal Disimpan")
-                    delay(3000)
-                    resetSnackBarMessage()
                 }
+                delay(3000)
+                resetSnackBarMessage()
             }
         } else {
             uiState = uiState.copy(snackBarMessage = "Input tidak valid. Periksa kembali data merk Anda.")

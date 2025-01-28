@@ -43,12 +43,11 @@ class InsertPemasokViewModel(private val pemasok: PemasokRepository) : ViewModel
                         isEntryValid = PemasokErrorState()
                     )
                     delay(3000)
-                    resetSnackBarMessage()
                 } catch (e: Exception) {
                     pemasokuiState = pemasokuiState.copy(snackBarMessage = "Data Pemasok Gagal Disimpan")
-                    delay(3000)
-                    resetSnackBarMessage()
                 }
+                delay(3000)
+                resetSnackBarMessage()
             }
         } else {
             pemasokuiState = pemasokuiState.copy(snackBarMessage = "Input tidak valid. Periksa kembali data pemasok Anda.")

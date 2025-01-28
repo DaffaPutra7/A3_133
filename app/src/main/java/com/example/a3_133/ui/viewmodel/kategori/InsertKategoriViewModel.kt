@@ -41,13 +41,13 @@ class InsertKategoriViewModel(private val kategori: KategoriRepository) : ViewMo
                         insertKategoriUiEvent = InsertKategoriUiEvent(),
                         isEntryValid = KategoriErrorState()
                     )
-                    delay(3000)
+                    delay(8000)
                     resetSnackBarMessage()
                 } catch (e: Exception) {
                     kategoriuiState = kategoriuiState.copy(snackBarMessage = "Data Kategori Gagal Disimpan")
-                    delay(3000)
-                    resetSnackBarMessage()
                 }
+                delay(3000)
+                resetSnackBarMessage()
             }
         } else {
             kategoriuiState = kategoriuiState.copy(snackBarMessage = "Input tidak valid. Periksa kembali data kategori Anda.")
