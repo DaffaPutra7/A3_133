@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -30,9 +31,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -220,6 +226,29 @@ fun KategoriCard(
     onUpdateClick: (Kategori) -> Unit = {},
     onDetailClick: (Kategori) -> Unit = {}
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(text = "Konfirmasi Hapus") },
+            text = { Text(text = "Apakah Anda yakin ingin menghapus data kategori ini?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDialog = false
+                    onDeleteClick(kategori)
+                }) {
+                    Text("Hapus")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("Batal")
+                }
+            }
+        )
+    }
+
     Card(
         modifier = modifier
             .clickable { onDetailClick(kategori) }
@@ -247,7 +276,7 @@ fun KategoriCard(
                     overflow = TextOverflow.Ellipsis, // Memotong teks dengan elipsis jika terlalu panjang
                     modifier = Modifier.weight(1f) // Mengatur lebar teks
                 )
-                IconButton(onClick = { onDeleteClick(kategori) }) {
+                IconButton(onClick = { showDialog = true }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Hapus Kategori",
@@ -265,7 +294,7 @@ fun KategoriCard(
             }
 
             Text(
-                text = "Deskripsi : ${ kategori.deskripsiKategori}",
+                text = "Deskripsi : ${kategori.deskripsiKategori}",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
