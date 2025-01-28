@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a3_133.model.Kategori
 import com.example.a3_133.repository.KategoriRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class InsertKategoriViewModel(private val kategori: KategoriRepository) : ViewModel() {
@@ -14,24 +15,68 @@ class InsertKategoriViewModel(private val kategori: KategoriRepository) : ViewMo
     var kategoriuiState by mutableStateOf(InsertKategoriUiState())
         private set
 
-    fun updateInsertKategoriState(insertkategoriUiEvent: InsertKategoriUiEvent){
-        kategoriuiState = InsertKategoriUiState(insertKategoriUiEvent = insertkategoriUiEvent)
+    fun updateInsertKategoriState(insertkategoriUiEvent: InsertKategoriUiEvent) {
+        kategoriuiState = kategoriuiState.copy(
+            insertKategoriUiEvent = insertkategoriUiEvent
+        )
     }
 
-    suspend fun insertKategori(){
-        viewModelScope.launch {
-            try {
-                kategori.insertKategori(kategoriuiState.insertKategoriUiEvent.toKategori())
-            } catch (e:Exception){
-                e.printStackTrace()
+    private fun validateFields(): Boolean {
+        val event = kategoriuiState.insertKategoriUiEvent
+        val errorState = KategoriErrorState(
+            namaKategori = if (event.namaKategori.isNotEmpty()) null else "Nama Kategori tidak boleh kosong",
+            deskripsiKategori = if (event.deskripsiKategori.isNotEmpty()) null else "Deskripsi Kategori tidak boleh kosong"
+        )
+        kategoriuiState = kategoriuiState.copy(isEntryValid = errorState)
+        return errorState.isValid()
+    }
+
+    fun insertKategori() {
+        if (validateFields()) {
+            viewModelScope.launch {
+                try {
+                    kategori.insertKategori(kategoriuiState.insertKategoriUiEvent.toKategori())
+                    kategoriuiState = kategoriuiState.copy(
+                        snackBarMessage = "Data Kategori Berhasil Disimpan",
+                        insertKategoriUiEvent = InsertKategoriUiEvent(),
+                        isEntryValid = KategoriErrorState()
+                    )
+                    delay(3000)
+                    resetSnackBarMessage()
+                } catch (e: Exception) {
+                    kategoriuiState = kategoriuiState.copy(snackBarMessage = "Data Kategori Gagal Disimpan")
+                    delay(3000)
+                    resetSnackBarMessage()
+                }
+            }
+        } else {
+            kategoriuiState = kategoriuiState.copy(snackBarMessage = "Input tidak valid. Periksa kembali data kategori Anda.")
+            viewModelScope.launch {
+                delay(3000)
+                resetSnackBarMessage()
             }
         }
+    }
+
+    fun resetSnackBarMessage() {
+        kategoriuiState = kategoriuiState.copy(snackBarMessage = null)
     }
 }
 
 data class InsertKategoriUiState(
-    val insertKategoriUiEvent: InsertKategoriUiEvent = InsertKategoriUiEvent()
+    val insertKategoriUiEvent: InsertKategoriUiEvent = InsertKategoriUiEvent(),
+    val isEntryValid: KategoriErrorState = KategoriErrorState(),
+    val snackBarMessage: String? = null
 )
+
+data class KategoriErrorState(
+    val namaKategori: String? = null,
+    val deskripsiKategori: String? = null
+) {
+    fun isValid(): Boolean {
+        return namaKategori == null && deskripsiKategori == null
+    }
+}
 
 data class InsertKategoriUiEvent(
     val idKategori: String = "",

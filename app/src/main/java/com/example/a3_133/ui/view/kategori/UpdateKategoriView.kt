@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
+import com.example.a3_133.ui.viewmodel.kategori.UpdateKategoriErrorState
 import com.example.a3_133.ui.viewmodel.kategori.UpdateKategoriUiEvent
 import com.example.a3_133.ui.viewmodel.kategori.UpdateKategoriUiState
 import com.example.a3_133.ui.viewmodel.kategori.UpdateKategoriViewModel
@@ -62,7 +63,9 @@ fun UpdateKategoriView(
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.updateKategori()
-                    navigateBack()
+                    if (viewModel.kategoriuiState.isSuccess) {
+                        navigateBack()
+                    }
                 }
             },
             modifier = Modifier
@@ -87,7 +90,8 @@ fun UpdateBodyKategori(
         FormUpdateKategori(
             updateKategoriUiEvent = updateKategoriUiState.updateKategoriUiEvent,
             onValueChange = onKategoriValueChange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            errorState = updateKategoriUiState.isEntryValid
         )
         Button(
             onClick = onSaveClick,
@@ -107,6 +111,7 @@ fun UpdateBodyKategori(
 @Composable
 fun FormUpdateKategori(
     updateKategoriUiEvent: UpdateKategoriUiEvent,
+    errorState: UpdateKategoriErrorState,
     modifier: Modifier = Modifier,
     onValueChange: (UpdateKategoriUiEvent) -> Unit = {},
     enabled: Boolean = true
@@ -121,7 +126,9 @@ fun FormUpdateKategori(
             label = { Text("Nama Kategori") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = errorState.namaKategori != null,
+            supportingText = { Text(errorState.namaKategori ?: "") }
         )
 
         OutlinedTextField(
@@ -130,7 +137,9 @@ fun FormUpdateKategori(
             label = { Text("Deskripsi Kategori") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = errorState.deskripsiKategori != null,
+            supportingText = { Text(errorState.deskripsiKategori ?: "") }
         )
     }
 }

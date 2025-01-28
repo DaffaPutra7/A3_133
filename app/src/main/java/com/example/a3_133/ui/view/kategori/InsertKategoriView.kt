@@ -28,6 +28,7 @@ import com.example.a3_133.ui.viewmodel.kategori.InsertKategoriUiEvent
 import com.example.a3_133.ui.viewmodel.kategori.InsertKategoriUiState
 import com.example.a3_133.ui.viewmodel.kategori.InsertKategoriViewModel
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
+import com.example.a3_133.ui.viewmodel.kategori.KategoriErrorState
 import kotlinx.coroutines.launch
 
 object DestinasiEntryKategori : DestinasiNavigasi {
@@ -86,6 +87,7 @@ fun EntryBodyKategori(
     ) {
         FormInputKategori(
             insertKategoriUiEvent = insertKategoriUiState.insertKategoriUiEvent,
+            isEntryValid = insertKategoriUiState.isEntryValid,
             onValueChange = onKategoriValueChange,
             modifier = Modifier.fillMaxWidth()
         )
@@ -107,6 +109,7 @@ fun EntryBodyKategori(
 @Composable
 fun FormInputKategori(
     insertKategoriUiEvent: InsertKategoriUiEvent,
+    isEntryValid: KategoriErrorState,
     modifier: Modifier = Modifier,
     onValueChange: (InsertKategoriUiEvent) -> Unit = {},
     enabled: Boolean = true
@@ -117,26 +120,38 @@ fun FormInputKategori(
     ) {
         OutlinedTextField(
             value = insertKategoriUiEvent.namaKategori,
-            onValueChange = { onValueChange(insertKategoriUiEvent.copy(namaKategori = it))},
+            onValueChange = { onValueChange(insertKategoriUiEvent.copy(namaKategori = it)) },
             label = { Text("Nama Kategori") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = isEntryValid.namaKategori != null // Highlight error
         )
+        if (isEntryValid.namaKategori != null) {
+            Text(
+                text = isEntryValid.namaKategori ?: "",
+                color = Color.Red,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+
         OutlinedTextField(
             value = insertKategoriUiEvent.deskripsiKategori,
-            onValueChange = { onValueChange(insertKategoriUiEvent.copy(deskripsiKategori = it))},
+            onValueChange = { onValueChange(insertKategoriUiEvent.copy(deskripsiKategori = it)) },
             label = { Text("Deskripsi Kategori") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = isEntryValid.deskripsiKategori != null // Highlight error
         )
-        if (enabled) {
+        if (isEntryValid.deskripsiKategori != null) {
             Text(
-                text = "Isi Semua Data!",
-                modifier = Modifier.padding(12.dp)
+                text = isEntryValid.deskripsiKategori ?: "",
+                color = Color.Red,
+                modifier = Modifier.padding(start = 16.dp)
             )
         }
+
         Divider(
             thickness = 8.dp,
             modifier = Modifier.padding(12.dp)
