@@ -30,6 +30,7 @@ import com.example.a3_133.ui.viewmodel.pemasok.InsertPemasokUiEvent
 import com.example.a3_133.ui.viewmodel.pemasok.InsertPemasokUiState
 import com.example.a3_133.ui.viewmodel.pemasok.InsertPemasokViewModel
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
+import com.example.a3_133.ui.viewmodel.pemasok.PemasokErrorState
 import kotlinx.coroutines.launch
 
 object DestinasiEntryPemasok : DestinasiNavigasi {
@@ -88,6 +89,7 @@ fun EntryBodyPemasok(
     ) {
         FormInputPemasok(
             insertpemasokUiEvent = insertpemasokUiState.insertPemasokUiEvent,
+            isEntryValid = insertpemasokUiState.isEntryValid,
             onValueChange = onPemasokValueChange,
             modifier = Modifier.fillMaxWidth()
         )
@@ -109,6 +111,7 @@ fun EntryBodyPemasok(
 @Composable
 fun FormInputPemasok(
     insertpemasokUiEvent: InsertPemasokUiEvent,
+    isEntryValid: PemasokErrorState,
     modifier: Modifier = Modifier,
     onValueChange: (InsertPemasokUiEvent) -> Unit = {},
     enabled: Boolean = true
@@ -123,16 +126,34 @@ fun FormInputPemasok(
             label = { Text("Nama Pemasok") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = isEntryValid.namaPemasok != null // Highlight error
         )
+        if (isEntryValid.namaPemasok != null) {
+            Text(
+                text = isEntryValid.namaPemasok ?: "",
+                color = Color.Red,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+
         OutlinedTextField(
             value = insertpemasokUiEvent.alamatPemasok,
             onValueChange = { onValueChange(insertpemasokUiEvent.copy(alamatPemasok = it)) },
             label = { Text("Alamat Pemasok") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = isEntryValid.alamatPemasok != null // Highlight error
         )
+        if (isEntryValid.alamatPemasok != null) {
+            Text(
+                text = isEntryValid.alamatPemasok ?: "",
+                color = Color.Red,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+
         OutlinedTextField(
             value = insertpemasokUiEvent.teleponPemasok,
             onValueChange = { onValueChange(insertpemasokUiEvent.copy(teleponPemasok = it)) },
@@ -140,14 +161,17 @@ fun FormInputPemasok(
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = isEntryValid.teleponPemasok != null // Highlight error
         )
-        if (enabled) {
+        if (isEntryValid.teleponPemasok != null) {
             Text(
-                text = "Isi Semua Data!",
-                modifier = Modifier.padding(12.dp)
+                text = isEntryValid.teleponPemasok ?: "",
+                color = Color.Red,
+                modifier = Modifier.padding(start = 16.dp)
             )
         }
+
         Divider(
             thickness = 8.dp,
             modifier = Modifier.padding(12.dp)

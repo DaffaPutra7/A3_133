@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
+import com.example.a3_133.ui.viewmodel.pemasok.UpdatePemasokErrorState
 import com.example.a3_133.ui.viewmodel.pemasok.UpdatePemasokUiEvent
 import com.example.a3_133.ui.viewmodel.pemasok.UpdatePemasokUiState
 import com.example.a3_133.ui.viewmodel.pemasok.UpdatePemasokViewModel
@@ -64,7 +65,9 @@ fun UpdatePemasokView(
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.updatePemasok()
-                    navigateBack()
+                    if (viewModel.pemasokuiState.isSuccess) {
+                        navigateBack()
+                    }
                 }
             },
             modifier = Modifier
@@ -89,7 +92,8 @@ fun UpdateBodyPemasok(
         FormUpdatePemasok(
             updatepemasokUiEvent = updatepemasokUiState.updatePemasokUiEvent,
             onValueChange = onPemasokValueChange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            errorState = updatepemasokUiState.isEntryValid
         )
         Button(
             onClick = onSaveClick,
@@ -111,7 +115,8 @@ fun FormUpdatePemasok(
     updatepemasokUiEvent: UpdatePemasokUiEvent,
     modifier: Modifier = Modifier,
     onValueChange: (UpdatePemasokUiEvent) -> Unit = {},
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    errorState: UpdatePemasokErrorState
 ) {
     Column(
         modifier = modifier,
@@ -123,7 +128,9 @@ fun FormUpdatePemasok(
             label = { Text("Nama Pemasok") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = errorState.namaPemasok != null,
+            supportingText = { Text(errorState.namaPemasok ?: "") }
         )
 
         OutlinedTextField(
@@ -132,7 +139,9 @@ fun FormUpdatePemasok(
             label = { Text("Alamat Pemasok") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = errorState.alamatPemasok != null,
+            supportingText = { Text(errorState.alamatPemasok ?: "") }
         )
 
         OutlinedTextField(
@@ -142,7 +151,9 @@ fun FormUpdatePemasok(
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = errorState.teleponPemasok != null,
+            supportingText = { Text(errorState.teleponPemasok ?: "") }
         )
     }
 }
