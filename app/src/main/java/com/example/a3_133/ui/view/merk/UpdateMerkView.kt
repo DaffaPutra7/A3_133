@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3_133.ui.customwidget.CustomeTopAppBar
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
+import com.example.a3_133.ui.viewmodel.merk.UpdateMerkErrorState
 import com.example.a3_133.ui.viewmodel.merk.UpdateMerkViewModel
 import com.example.a3_133.ui.viewmodel.merk.UpdateUiEvent
 import com.example.a3_133.ui.viewmodel.merk.UpdateUiState
@@ -62,7 +63,9 @@ fun UpdateMerkView(
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.updateMerk()
-                    navigateBack()
+                    if (viewModel.uiState.isSuccess) {
+                        navigateBack()
+                    }
                 }
             },
             modifier = Modifier
@@ -87,7 +90,8 @@ fun UpdateBodyMerk(
         FormUpdateMerk(
             updateUiEvent = updateUiState.updateUiEvent,
             onValueChange = onMerkValueChange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            errorState = updateUiState.isEntryValid
         )
         Button(
             onClick = onSaveClick,
@@ -107,6 +111,7 @@ fun UpdateBodyMerk(
 @Composable
 fun FormUpdateMerk(
     updateUiEvent: UpdateUiEvent,
+    errorState: UpdateMerkErrorState,
     modifier: Modifier = Modifier,
     onValueChange: (UpdateUiEvent) -> Unit = {},
     enabled: Boolean = true
@@ -121,7 +126,9 @@ fun FormUpdateMerk(
             label = { Text("Nama Merk") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = errorState.namaMerk != null,
+            supportingText = { Text(errorState.namaMerk ?: "") }
         )
 
         OutlinedTextField(
@@ -130,7 +137,9 @@ fun FormUpdateMerk(
             label = { Text("Deskripsi Merk") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = errorState.deskripsiMerk != null,
+            supportingText = { Text(errorState.deskripsiMerk ?: "") }
         )
     }
 }

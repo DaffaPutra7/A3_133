@@ -28,6 +28,7 @@ import com.example.a3_133.ui.viewmodel.merk.InsertMerkViewModel
 import com.example.a3_133.ui.viewmodel.merk.InsertUiEvent
 import com.example.a3_133.ui.viewmodel.merk.InsertUiState
 import com.example.a3_133.ui.viewmodel.PenyediaViewModel
+import com.example.a3_133.ui.viewmodel.merk.MerkErrorState
 import kotlinx.coroutines.launch
 
 object DestinasiEntry : DestinasiNavigasi {
@@ -86,6 +87,7 @@ fun EntryBodyMerk(
     ) {
         FormInputMerk(
             insertUiEvent = insertUiState.insertUiEvent,
+            isEntryValid = insertUiState.isEntryValid,
             onValueChange = onMerkValueChange,
             modifier = Modifier.fillMaxWidth()
         )
@@ -107,6 +109,7 @@ fun EntryBodyMerk(
 @Composable
 fun FormInputMerk(
     insertUiEvent: InsertUiEvent,
+    isEntryValid: MerkErrorState,
     modifier: Modifier = Modifier,
     onValueChange: (InsertUiEvent) -> Unit = {},
     enabled: Boolean = true
@@ -121,22 +124,34 @@ fun FormInputMerk(
             label = { Text("Nama Merk") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = isEntryValid.namaMerk != null // Highlight error
         )
+        if (isEntryValid.namaMerk != null) {
+            Text(
+                text = isEntryValid.namaMerk ?: "",
+                color = Color.Red,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+
         OutlinedTextField(
             value = insertUiEvent.deskripsiMerk,
             onValueChange = { onValueChange(insertUiEvent.copy(deskripsiMerk = it)) },
             label = { Text("Deskripsi Merk") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = isEntryValid.deskripsiMerk != null // Highlight error
         )
-        if (enabled) {
+        if (isEntryValid.deskripsiMerk != null) {
             Text(
-                text = "Isi Semua Data!",
-                modifier = Modifier.padding(12.dp)
+                text = isEntryValid.deskripsiMerk ?: "",
+                color = Color.Red,
+                modifier = Modifier.padding(start = 16.dp)
             )
         }
+
         Divider(
             thickness = 8.dp,
             modifier = Modifier.padding(12.dp)
