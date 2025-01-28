@@ -51,3 +51,40 @@ Insert Pemasok
 
 Detail Pemasok
 ![Screenshot 2025-01-28 233159](https://github.com/user-attachments/assets/ed0e2c4c-42fa-4b8a-8724-38478fbf392c)
+
+Update Pemasok
+![Screenshot 2025-01-28 233349](https://github.com/user-attachments/assets/32dc51e4-c717-4d9b-bede-3f20223e24c9)
+![Screenshot 2025-01-28 233424](https://github.com/user-attachments/assets/99d72d41-4db0-4652-bf12-8b9253d5352f)
+![Screenshot 2025-01-28 233442](https://github.com/user-attachments/assets/fbe0f4d5-898c-4a8a-978e-e819d4483a71)
+![Screenshot 2025-01-28 233515](https://github.com/user-attachments/assets/aebddf2c-0ce4-49b0-b04d-11fa499f5f7d)
+
+Delete Pemasok
+![Screenshot 2025-01-28 233540](https://github.com/user-attachments/assets/548d7c3c-df00-4615-a236-244f101be6be)
+![Screenshot 2025-01-28 233601](https://github.com/user-attachments/assets/c2580eb6-0424-447f-9b29-a04da9cf1b37)
+
+Home Merk
+![Screenshot 2025-01-28 233622](https://github.com/user-attachments/assets/88cf6848-ba6e-4813-ba2e-bc6d5ede552b)
+
+Insert Merk
+![Screenshot 2025-01-28 233650](https://github.com/user-attachments/assets/b4fc28dd-f1a4-4bbe-8ff2-44a622195810)
+![Screenshot 2025-01-28 233710](https://github.com/user-attachments/assets/10ac92b4-a92b-45e6-a02f-74b31b9b4822)
+![Screenshot 2025-01-28 233748](https://github.com/user-attachments/assets/85dbd27e-5b56-40f2-8c55-02d04ec3a277)
+
+Detail Merk
+![Screenshot 2025-01-28 233824](https://github.com/user-attachments/assets/d6e8cc02-9272-4946-bd04-ebdb4fadeeb1)
+
+Update Merk
+![Screenshot 2025-01-28 233851](https://github.com/user-attachments/assets/a815beee-3e1f-4c5f-a04f-17127ec8a904)
+![Screenshot 2025-01-28 233909](https://github.com/user-attachments/assets/d19530a3-35b9-4898-b439-2119ecdcc542)
+![Screenshot 2025-01-28 233917](https://github.com/user-attachments/assets/41f56eea-d673-4963-9439-652ad818ae19)
+![Screenshot 2025-01-28 233921](https://github.com/user-attachments/assets/2e42c33b-25dc-4b51-96a5-c659cb2066f2)
+
+Delete Merk
+![Screenshot 2025-01-28 234004](https://github.com/user-attachments/assets/2b0c5d9e-fc2f-42e1-8f29-f3258b2112c9)
+![Screenshot 2025-01-28 234008](https://github.com/user-attachments/assets/37b4e903-4340-44e6-9a3a-06552ea8902b)
+
+Database
+![Screenshot 2025-01-28 234048](https://github.com/user-attachments/assets/f754df79-4d45-4b82-b531-40f1fbb408f8)
+![Screenshot 2025-01-28 234055](https://github.com/user-attachments/assets/602f824a-9239-45f2-b4aa-440407457475)
+![Screenshot 2025-01-28 234101](https://github.com/user-attachments/assets/fad09bc1-1f16-451a-96d0-c8da0682ea94)
+![Screenshot 2025-01-28 234107](https://github.com/user-attachments/assets/0cf21a7e-2b8d-4887-bae3-280719d440ce)
